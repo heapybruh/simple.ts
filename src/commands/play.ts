@@ -2,7 +2,7 @@ import {
   ApplicationCommandOptionType,
   type CommandInteraction,
 } from "discord.js"
-import { Discord, Slash, SlashChoice, SlashOption } from "discordx"
+import { Discord, Slash, SlashOption } from "discordx"
 import { bot } from "../index.js"
 
 @Discord()
@@ -13,15 +13,6 @@ export class Play {
     name: "play",
   })
   async play(
-    @SlashChoice({ name: "Enabled", value: true })
-    @SlashChoice({ name: "Disabled", value: false })
-    @SlashOption({
-      description: "Enable or disable autoplay",
-      name: "autoplay",
-      required: true,
-      type: ApplicationCommandOptionType.Boolean,
-    })
-    autoPlay: boolean,
     @SlashOption({
       description: "Query that will be used for searching song(s)",
       name: "query",
@@ -33,7 +24,7 @@ export class Play {
   ): Promise<void> {
     if (!bot.moon) {
       await interaction.reply({
-        content: `Not connected to Lavalink server`,
+        content: "Not connected to Lavalink server",
         ephemeral: true,
       })
 
@@ -46,9 +37,10 @@ export class Play {
 
     if (!member?.voice) {
       await interaction.reply({
-        content: `You are not in a voice channel`,
+        content: "You are not in a voice channel",
         ephemeral: true,
       })
+
       return
     }
 
@@ -59,7 +51,7 @@ export class Play {
         guildId: interaction.guildId!,
         voiceChannel: member.voice.channelId!,
         textChannel: interaction.channelId,
-        autoPlay: autoPlay,
+        autoLeave: true,
       })
 
       player.connect({
@@ -70,19 +62,18 @@ export class Play {
 
     var results = await bot.moon.search({
       query: query,
-      source: "youtube",
-      requester: interaction.user.id,
+      requester: interaction.user,
     })
 
     if (results.loadType == "error") {
       await interaction.reply({
-        content: `An error has occurred while getting song(s)`,
+        content: "Error has occurred while getting song(s)",
       })
 
       return
     } else if (results.loadType == "empty") {
       await interaction.reply({
-        content: `Couldn't find song(s)`,
+        content: "Couldn't find song(s)",
       })
 
       return
@@ -90,7 +81,7 @@ export class Play {
 
     if (results.loadType == "playlist") {
       await interaction.reply({
-        content: `${results.playlistInfo!.name} Added playlist to queue`,
+        content: `Added playlist \`${results.playlistInfo!.name}\` to queue`,
       })
 
       for (const track of results.tracks) player.queue.add(track)
@@ -98,7 +89,7 @@ export class Play {
       player.queue.add(results.tracks[0])
 
       await interaction.reply({
-        content: `${results.tracks[0].title} was added to queue`,
+        content: `Added song \`${results.tracks[0].title}\` by \`${results.tracks[0].author}\` to queue`,
       })
     }
 

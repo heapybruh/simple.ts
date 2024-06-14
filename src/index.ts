@@ -1,20 +1,15 @@
-import { IntentsBitField, Interaction, TextChannel } from "discord.js"
-import { Client, ClientOptions } from "discordx"
-import { MoonlinkManager } from "moonlink.js"
-import * as dotenv from "dotenv"
+import dotenv from "dotenv"
 import { importx, dirname } from "@discordx/importer"
+import { Console } from "./utils/console.js"
+import { initEvents } from "./utils/events.js"
+import { DiscordClient } from "./utils/client.js"
+import { MoonlinkManager } from "moonlink.js"
 
 dotenv.config()
 
-class SimpleClient extends Client {
-  moon: MoonlinkManager | undefined
+export const console = new Console()
 
-  constructor(options: ClientOptions) {
-    super(options)
-  }
-}
-
-export const bot = new SimpleClient({
+export const bot = new DiscordClient({
   intents: 131071,
   silent: true,
 })
@@ -22,12 +17,12 @@ export const bot = new SimpleClient({
 bot.moon = new MoonlinkManager(
   [
     {
-      host: process.env.LAVA_HOST ? process.env.LAVA_HOST : "127.0.0.1",
+      host: process.env.LAVA_HOST ? process.env.LAVA_HOST : `127.0.0.1`,
       port: process.env.LAVA_PORT ? Number(process.env.LAVA_PORT) : 2333,
       secure: false,
       password: process.env.LAVA_PASS
         ? process.env.LAVA_PASS
-        : "youshallnotpass",
+        : `youshallnotpass`,
     },
   ],
   {},
@@ -37,35 +32,13 @@ bot.moon = new MoonlinkManager(
   }
 )
 
-bot.on("ready", async () => {
-  await bot.moon!.init(bot.user?.id)
-  await bot.initApplicationCommands()
-})
-
-bot.on("raw", (data) => bot.moon!.packetUpdate(data))
-
-bot.on("interactionCreate", (interaction: Interaction) =>
-  bot.executeInteraction(interaction)
-)
-
-bot.moon.on("nodeCreate", (node) => {
-  console.log(`Connected to Lavalink: ${node.host}`)
-})
-
-bot.moon.on("trackStart", async (player, track) => {
-  const channel = bot.channels.cache.get(player.textChannel) as TextChannel
-  if (channel) channel.send(`${track.title} is playing`)
-})
-
-bot.moon.on("trackEnd", async (player) => {})
-
-bot.moon.on("playerDisconnect", async (player) => await player.destroy())
-
 async function run() {
+  initEvents()
+
   await importx(`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}`)
 
   if (!process.env.BOT_TOKEN)
-    throw Error("Could not find BOT_TOKEN in your environment")
+    throw Error(`Could not find BOT_TOKEN in your environment`)
 
   await bot.login(process.env.BOT_TOKEN)
 }
