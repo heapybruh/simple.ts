@@ -1,4 +1,4 @@
-import { CommandInteraction, EmbedBuilder } from "discord.js"
+import { CommandInteraction, EmbedBuilder, HexColorString } from "discord.js"
 import { Discord, Slash } from "discordx"
 import {
   Pagination,
@@ -15,7 +15,7 @@ function GeneratePages(
   const getQueue = queue.getQueue()
   const currentTrack = player.current as MoonlinkTrack
   const nowPlaying = `Current track: ${currentTrack.title} by ${currentTrack.author}`
-  const footer = bot.user?.avatarURL()
+  const color: HexColorString = `#${process.env.EMBED_COLOR}`
 
   const pages = Array.from(Array(Math.ceil(queue.size / 20)).keys()).map(
     (pageIndex) => {
@@ -53,15 +53,16 @@ function GeneratePages(
               name: "Page 1/1",
               iconURL: process.env.QUEUE_PATH,
             })
-            .setTitle(nowPlaying)
-            .setURL(currentTrack.url)
-            .setThumbnail(currentTrack.artworkUrl)
+            .setColor(color)
             .setDescription("Looks like queue is empty... :broom: :dash:")
-            .setColor([48, 120, 199])
             .setFooter({
               text: "Buttons will be removed after 60 seconds of inactivity",
               iconURL: process.env.LOGO_PATH,
-            }),
+            })
+            .setTimestamp(Date.now())
+            .setTitle(nowPlaying)
+            .setThumbnail(currentTrack.artworkUrl)
+            .setURL(currentTrack.url),
         ],
       },
     ]
@@ -74,15 +75,16 @@ function GeneratePages(
             name: page.title,
             iconURL: process.env.QUEUE_PATH,
           })
-          .setTitle(nowPlaying)
-          .setURL(currentTrack.url)
-          .setThumbnail(currentTrack.artworkUrl)
+          .setColor(color)
           .setDescription(page.description)
-          .setColor([48, 120, 199])
           .setFooter({
             text: "Buttons will be removed after 60 seconds of inactivity",
             iconURL: process.env.LOGO_PATH,
-          }),
+          })
+          .setTimestamp(Date.now())
+          .setTitle(nowPlaying)
+          .setThumbnail(currentTrack.artworkUrl)
+          .setURL(currentTrack.url),
       ],
     }
   })
