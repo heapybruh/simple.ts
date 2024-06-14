@@ -1,9 +1,10 @@
 import {
   ApplicationCommandOptionType,
+  EmbedBuilder,
   type CommandInteraction,
 } from "discord.js"
 import { Discord, Slash, SlashOption } from "discordx"
-import { bot } from "../index.js"
+import { bot, color } from "../index.js"
 
 @Discord()
 export class Play {
@@ -81,7 +82,20 @@ export class Play {
 
     if (results.loadType == "playlist") {
       await interaction.reply({
-        content: `Added playlist \`${results.playlistInfo!.name}\` to queue`,
+        embeds: [
+          new EmbedBuilder()
+            .setAuthor({
+              name: "Added playlist to queue",
+              iconURL: process.env.QUEUE_PATH,
+            })
+            .setColor(color)
+            .setFooter({
+              text: `@${member.user.username} used /play`,
+              iconURL: process.env.LOGO_PATH,
+            })
+            .setTimestamp(Date.now())
+            .setTitle(`${results.playlistInfo!.name}`),
+        ],
       })
 
       for (const track of results.tracks) player.queue.add(track)
@@ -89,7 +103,24 @@ export class Play {
       player.queue.add(results.tracks[0])
 
       await interaction.reply({
-        content: `Added song \`${results.tracks[0].title}\` by \`${results.tracks[0].author}\` to queue`,
+        embeds: [
+          new EmbedBuilder()
+            .setAuthor({
+              name: "Added song to queue",
+              iconURL: process.env.QUEUE_PATH,
+            })
+            .setColor(color)
+            .setFooter({
+              text: `@${member.user.username} used /play`,
+              iconURL: process.env.LOGO_PATH,
+            })
+            .setTimestamp(Date.now())
+            .setTitle(
+              `${results.tracks[0].title} by ${results.tracks[0].author}`
+            )
+            .setImage(results.tracks[0].artworkUrl)
+            .setURL(results.tracks[0].url),
+        ],
       })
     }
 
