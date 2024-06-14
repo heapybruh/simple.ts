@@ -5,7 +5,7 @@ import {
   PaginationItem,
   PaginationType,
 } from "@discordx/pagination"
-import { bot } from "../index.js"
+import { bot, color } from "../index.js"
 import { MoonlinkPlayer, MoonlinkQueue, MoonlinkTrack } from "moonlink.js"
 
 function GeneratePages(
@@ -15,7 +15,6 @@ function GeneratePages(
   const getQueue = queue.getQueue()
   const currentTrack = player.current as MoonlinkTrack
   const nowPlaying = `Current track: ${currentTrack.title} by ${currentTrack.author}`
-  const color: HexColorString = `#${process.env.EMBED_COLOR}`
 
   const pages = Array.from(Array(Math.ceil(queue.size / 20)).keys()).map(
     (pageIndex) => {

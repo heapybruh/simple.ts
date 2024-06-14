@@ -4,8 +4,11 @@ import { Console } from "./utils/console.js"
 import { initEvents } from "./utils/events.js"
 import { DiscordClient } from "./utils/client.js"
 import { MoonlinkManager } from "moonlink.js"
+import { HexColorString } from "discord.js"
 
 dotenv.config()
+
+export const color: HexColorString = `#${process.env.EMBED_COLOR}`
 
 export const console = new Console()
 
