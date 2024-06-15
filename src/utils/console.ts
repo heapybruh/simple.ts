@@ -1,7 +1,7 @@
 import chalk from "chalk"
 
 export class Console {
-  _prefix = `[ ${chalk.blue.bold("simple.ts")} ]`
+  private _prefix = `[ ${chalk.blue.bold("simple.ts")} ]`
 
   public print(message: any): void {
     console.log(`${this._prefix} ${message}`)
