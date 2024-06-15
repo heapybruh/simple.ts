@@ -15,7 +15,7 @@ export class Console {
     })
 
     console.log(
-      `${this._prefix} ${chalk.greenBright.bold("DEBUG >>")} ${chalk.bgGreenBright(` ${title} `)} ${description}`
+      `${this._prefix} ${chalk.green.bold("DEBUG >>")} ${chalk.bgGreen(` ${title} `)} ${description}`
     )
   }
 }
