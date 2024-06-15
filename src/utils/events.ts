@@ -12,7 +12,7 @@ export function initEvents() {
     console.print(`Logged in as @${bot.user?.username}`)
 
     if (process.env.DEBUG)
-      console.debug(`ready`, [`user: @${bot.user?.username} (${bot.user?.id})`])
+      console.debug("ready", [`user: @${bot.user?.username} (${bot.user?.id})`])
 
     await bot.moon!.init(bot.user?.id)
     await bot.initApplicationCommands()
@@ -24,7 +24,7 @@ export function initEvents() {
     bot.executeInteraction(interaction)
 
     if (process.env.DEBUG)
-      console.debug(`interaction`, [
+      console.debug("interaction", [
         `guild: ${interaction.guildId}`,
         `user: @${interaction.user.username} (${interaction.user.id})`,
         interaction.isCommand()
@@ -33,11 +33,29 @@ export function initEvents() {
       ])
   })
 
-  bot.moon.on("nodeCreate", async (node: MoonlinkNode) => {
-    console.print(`Connected to Lavalink`)
+  bot.on("voiceStateUpdate", async (oldState, newState) => {
+    const player = bot.moon?.players.get(newState.guild.id)
+
+    if (
+      oldState.channelId &&
+      !newState.channelId &&
+      player &&
+      player.voiceChannel == oldState.channelId
+    )
+      if (oldState.channel?.members.size == 1) await player.destroy()
 
     if (process.env.DEBUG)
-      console.debug(`nodeCreate`, [`host: ${node.host}:${node.port}`])
+      console.debug("voiceStateUpdate", [
+        `oldState: ${oldState.channelId}`,
+        `newState: ${newState.channelId}`,
+      ])
+  })
+
+  bot.moon.on("nodeCreate", async (node: MoonlinkNode) => {
+    console.print("Connected to Lavalink")
+
+    if (process.env.DEBUG)
+      console.debug("nodeCreate", [`host: ${node.host}:${node.port}`])
   })
 
   bot.moon.on(
@@ -48,7 +66,7 @@ export function initEvents() {
         channel.send(`\`${track.title}\` by \`${track.author}\` is playing`)
 
       if (process.env.DEBUG)
-        console.debug(`trackStart`, [
+        console.debug("trackStart", [
           `guild: ${player.guildId}`,
           track.requester
             ? `requester: @${track.requester.username} (${track.requester.id})`
@@ -62,7 +80,7 @@ export function initEvents() {
     "trackEnd",
     async (player: MoonlinkPlayer, track: MoonlinkTrack) => {
       if (process.env.DEBUG)
-        console.debug(`trackEnd`, [
+        console.debug("trackEnd", [
           `guild: ${player.guildId}`,
           track.requester
             ? `requester: @${track.requester.username} (${track.requester.id})`
@@ -77,7 +95,7 @@ export function initEvents() {
 
         if (channel)
           channel.send(
-            `:red_circle: Autoplay was enabled and last track wasn't a YouTube track. Autoplay currently works only with YouTube tracks, disconnecting...`
+            ":red_circle: Autoplay was enabled and last track wasn't a YouTube track. Autoplay currently works only with YouTube tracks, disconnecting..."
           )
 
         await player.destroy()
@@ -95,7 +113,7 @@ export function initEvents() {
         )
 
       if (process.env.DEBUG)
-        console.debug(`trackError`, [
+        console.debug("trackError", [
           `guild: ${player.guildId}`,
           track.requester
             ? `requester: @${track.requester.username} (${track.requester.id})`
@@ -110,12 +128,12 @@ export function initEvents() {
   bot.moon.on("queueEnd", async (player: MoonlinkPlayer) => {
     await player.destroy()
     if (process.env.DEBUG)
-      console.debug(`queueEnd`, [`guild: ${player.guildId}`])
+      console.debug("queueEnd", [`guild: ${player.guildId}`])
   })
 
   bot.moon.on("playerDisconnect", async (player: MoonlinkPlayer) => {
     await player.destroy()
     if (process.env.DEBUG)
-      console.debug(`playerDisconnect`, [`guild: ${player.guildId}`])
+      console.debug("playerDisconnect", [`guild: ${player.guildId}`])
   })
 }
