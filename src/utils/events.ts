@@ -46,6 +46,7 @@ export function initEvents() {
 
     if (process.env.DEBUG)
       console.debug("voiceStateUpdate", [
+        `user: @${newState.member?.user.username} (${newState.member?.user.id})`,
         `oldState: ${oldState.channelId}`,
         `newState: ${newState.channelId}`,
       ])
