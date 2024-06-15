@@ -24,15 +24,15 @@ function GeneratePages(
         var description = ``
 
         const slicedQueue = getQueue.slice(
-          0 + pageIndex * 10,
-          10 + pageIndex * 10
+          0 + pageIndex * 20,
+          20 + pageIndex * 20
         )
 
         slicedQueue.map(
           (track, index) =>
             (description =
               description +
-              `\n${index + pageIndex * 10}. [${track.title}](${track.url}) by **${track.author}**`)
+              `\n${(pageIndex == 0 ? 0 : 1) + index + pageIndex * 20}. [${track.title}](${track.url}) by **${track.author}**`)
         )
 
         return description

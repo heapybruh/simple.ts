@@ -38,9 +38,28 @@ export class Remove {
       return
     }
 
+    if (position < 1) {
+      await interaction.reply({
+        content: "Position must be above or equal 1",
+        ephemeral: true,
+      })
+
+      return
+    }
+
     const queue = player.queue.getQueue()
+
+    if (position > queue.length) {
+      await interaction.reply({
+        content: "There is no song at this position",
+        ephemeral: true,
+      })
+
+      return
+    }
+
     const track = queue[position - 1]
-    await player.queue.remove(position - 1)
+    player.queue.remove(position)
     await interaction.reply(
       `Removed \`${track.title}\` by \`${track.author}\` from queue`
     )
