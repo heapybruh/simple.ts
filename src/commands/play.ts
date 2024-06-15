@@ -5,6 +5,7 @@ import {
 } from "discord.js"
 import { Discord, Slash, SlashOption } from "discordx"
 import { bot, color } from "../index.js"
+import { secondsToDuration } from "../utils/duration.js"
 
 @Discord()
 export class Play {
@@ -81,9 +82,17 @@ export class Play {
     }
 
     if (results.loadType == "playlist") {
+      const duration = secondsToDuration(
+        Math.floor(results.playlistInfo!.duration / 1000)
+      )
+
       await interaction.reply({
         embeds: [
           new EmbedBuilder()
+            .addFields({
+              name: "Duration",
+              value: duration,
+            })
             .setAuthor({
               name: "Added playlist to queue",
               iconURL: process.env.QUEUE_PATH,
@@ -101,10 +110,17 @@ export class Play {
       for (const track of results.tracks) player.queue.add(track)
     } else {
       player.queue.add(results.tracks[0])
+      const duration = secondsToDuration(
+        Math.floor(results.tracks[0].duration / 1000)
+      )
 
       await interaction.reply({
         embeds: [
           new EmbedBuilder()
+            .addFields({
+              name: "Duration",
+              value: duration,
+            })
             .setAuthor({
               name: "Added song to queue",
               iconURL: process.env.QUEUE_PATH,
