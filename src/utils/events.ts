@@ -9,7 +9,7 @@ export function initEvents() {
   }
 
   bot.on("ready", async () => {
-    console.print(`Logged in as @${bot.user?.username}`)
+    console.print(`Logged in as: ${bot.user?.username}`)
     console.print(
       `Invite your bot by using URL below\n>> https://discord.com/api/oauth2/authorize?client_id=${process.env.BOT_APPLICATION_ID}&permissions=3262464&scope=applications.commands%20bot`
     )
