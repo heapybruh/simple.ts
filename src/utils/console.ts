@@ -7,10 +7,10 @@ export class Console {
     console.log(`${this._prefix} ${message}`)
   }
 
-  public debug(title: string, info: (string | undefined)[]): void {
+  public debug(title: string, fields: (string | undefined)[]): void {
     var description = ``
 
-    info.map((value) => {
+    fields.map((value) => {
       if (value) description = description + `\n                    >> ${value}`
     })
 
