@@ -14,7 +14,9 @@ function GeneratePages(
 ): PaginationItem[] {
   const getQueue = queue.getQueue()
   const currentTrack = player.current as MoonlinkTrack
-  const nowPlaying = `Current track: ${currentTrack.title} by ${currentTrack.author}`
+  const nowPlaying = currentTrack
+    ? `Current track: ${currentTrack.title} by ${currentTrack.author}`
+    : null
 
   const pages = Array.from(Array(Math.ceil(queue.size / 20)).keys()).map(
     (pageIndex) => {
@@ -53,15 +55,17 @@ function GeneratePages(
               iconURL: process.env.QUEUE_PATH,
             })
             .setColor(color)
-            .setDescription("Looks like queue is empty... :broom: :dash:")
+            .setDescription(
+              `${player.autoPlay ? "Autoplay is **enabled** :green_circle:" : "Autoplay is **disabled** :red_circle:"}\nLooks like queue is empty... :broom: :dash:`
+            )
             .setFooter({
-              text: "Buttons will be removed after 60 seconds of inactivity",
+              text: "Queue will expire after 60 seconds of inactivity",
               iconURL: process.env.LOGO_PATH,
             })
             .setTimestamp(Date.now())
             .setTitle(nowPlaying)
-            .setThumbnail(currentTrack.artworkUrl)
-            .setURL(currentTrack.url),
+            .setThumbnail(currentTrack ? currentTrack.artworkUrl : null)
+            .setURL(currentTrack ? currentTrack.url : null),
         ],
       },
     ]
@@ -77,13 +81,13 @@ function GeneratePages(
           .setColor(color)
           .setDescription(page.description)
           .setFooter({
-            text: "Buttons will be removed after 60 seconds of inactivity",
+            text: "Queue will expire after 60 seconds of inactivity",
             iconURL: process.env.LOGO_PATH,
           })
           .setTimestamp(Date.now())
           .setTitle(nowPlaying)
-          .setThumbnail(currentTrack.artworkUrl)
-          .setURL(currentTrack.url),
+          .setThumbnail(currentTrack ? currentTrack.artworkUrl : null)
+          .setURL(currentTrack ? currentTrack.url : null),
       ],
     }
   })
@@ -119,6 +123,24 @@ export class Queue {
     new Pagination(interaction, GeneratePages(player, player.queue), {
       type: PaginationType.Button,
       time: 60 * 1000,
+      async onTimeout(page, message) {
+        await message.edit({
+          embeds: [
+            new EmbedBuilder()
+              .setAuthor({
+                name: "Queue has expired",
+                iconURL: process.env.QUEUE_PATH,
+              })
+              .setColor(color)
+              .setDescription("Use **/queue** again to get the queue.")
+              .setFooter({
+                text: `@${interaction.member?.user.username} used /queue`,
+                iconURL: process.env.LOGO_PATH,
+              })
+              .setTimestamp(Date.now()),
+          ],
+        })
+      },
     }).send()
   }
 }
