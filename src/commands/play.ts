@@ -24,7 +24,7 @@ export class Play {
     query: string,
     interaction: CommandInteraction
   ): Promise<void> {
-    if (!bot.moon) {
+    if (!bot.moon.isConnected) {
       await interaction.reply({
         content: "Not connected to Lavalink server",
         ephemeral: true,

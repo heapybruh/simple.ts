@@ -13,11 +13,11 @@ export function initEvents() {
     if (process.env.DEBUG)
       console.debug("ready", [`user: @${bot.user?.username} (${bot.user?.id})`])
 
-    await bot.moon!.init(bot.user?.id)
+    await bot.moon.init(bot.user?.id)
     await bot.initApplicationCommands()
   })
 
-  bot.on("raw", (data: any) => bot.moon!.packetUpdate(data))
+  bot.on("raw", (data: any) => bot.moon.packetUpdate(data))
 
   bot.on("interactionCreate", (interaction: Interaction) => {
     bot.executeInteraction(interaction)
@@ -33,7 +33,7 @@ export function initEvents() {
   })
 
   bot.on("voiceStateUpdate", async (oldState, newState) => {
-    const player = bot.moon?.players.get(newState.guild.id)
+    const player = bot.moon.players.get(newState.guild.id)
 
     if (
       oldState.channelId &&
@@ -51,13 +51,17 @@ export function initEvents() {
       ])
   })
 
-  if (!bot.moon) return
-
-  bot.moon.on("nodeCreate", async (node: MoonlinkNode) => {
+  bot.moon.on("nodeCreate", (node: MoonlinkNode) => {
+    bot.moon.isConnected = true
     console.print("Connected to Lavalink")
 
     if (process.env.DEBUG)
       console.debug("nodeCreate", [`host: ${node.host}:${node.port}`])
+  })
+
+  bot.moon.on("nodeError", (node: MoonlinkNode, error: Error) => {
+    if (process.env.DEBUG)
+      console.debug("nodeError", [`error: ${error.message}`])
   })
 
   bot.moon.on(
