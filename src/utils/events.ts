@@ -3,11 +3,6 @@ import { bot, console } from "../index.js"
 import { MoonlinkNode, MoonlinkPlayer, MoonlinkTrack } from "moonlink.js"
 
 export function initEvents() {
-  if (!bot.moon) {
-    console.print("Moonlink init error")
-    return
-  }
-
   bot.on("ready", async () => {
     console.print(`Logged in as: ${bot.user?.username}`)
     console.print(
@@ -54,6 +49,8 @@ export function initEvents() {
         `newState: ${newState.channelId}`,
       ])
   })
+
+  if (!bot.moon) return
 
   bot.moon.on("nodeCreate", async (node: MoonlinkNode) => {
     console.print("Connected to Lavalink")
