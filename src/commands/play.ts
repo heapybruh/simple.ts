@@ -93,10 +93,20 @@ export class Play {
       await interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .addFields({
-              name: "Duration",
-              value: duration,
-            })
+            .addFields(
+              {
+                name: "Duration",
+                value: duration,
+                inline: true,
+              },
+              {
+                name: "Requested by",
+                value: results.tracks[0].requester
+                  ? `<@${results.tracks[0].requester.id}>`
+                  : "Not Found",
+                inline: true,
+              }
+            )
             .setAuthor({
               name: "Added playlist to queue",
               iconURL: process.env.QUEUE_PATH,
@@ -107,7 +117,7 @@ export class Play {
               iconURL: process.env.LOGO_PATH,
             })
             .setTimestamp(Date.now())
-            .setTitle(`${results.playlistInfo!.name}`),
+            .setTitle(results.playlistInfo!.name),
         ],
       })
 
@@ -117,10 +127,25 @@ export class Play {
       await interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .addFields({
-              name: "Duration",
-              value: duration,
-            })
+            .addFields(
+              {
+                name: "Author",
+                value: results.tracks[0].author,
+                inline: true,
+              },
+              {
+                name: "Duration",
+                value: duration,
+                inline: true,
+              },
+              {
+                name: "Requested by",
+                value: results.tracks[0].requester
+                  ? `<@${results.tracks[0].requester.id}>`
+                  : "Not Found",
+                inline: true,
+              }
+            )
             .setAuthor({
               name: "Added song to queue",
               iconURL: process.env.QUEUE_PATH,
@@ -131,9 +156,7 @@ export class Play {
               iconURL: process.env.LOGO_PATH,
             })
             .setTimestamp(Date.now())
-            .setTitle(
-              `${results.tracks[0].title} by ${results.tracks[0].author}`
-            )
+            .setTitle(results.tracks[0].title)
             .setImage(results.tracks[0].artworkUrl)
             .setURL(results.tracks[0].url),
         ],

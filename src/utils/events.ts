@@ -72,16 +72,36 @@ export function initEvents() {
         channel.send({
           embeds: [
             new EmbedBuilder()
-              .addFields({
-                name: "Duration",
-                value: secondsToDuration(Math.floor(track.duration / 1000)),
-              })
+              .addFields(
+                {
+                  name: "Author",
+                  value: track.author,
+                  inline: true,
+                },
+                {
+                  name: "Duration",
+                  value: secondsToDuration(Math.floor(track.duration / 1000)),
+                  inline: true,
+                },
+                {
+                  name: "Requested by",
+                  value: track.requester
+                    ? `<@${track.requester.id}>`
+                    : "Not Found",
+                  inline: true,
+                }
+              )
               .setAuthor({
                 name: "Now Playing",
                 iconURL: process.env.PLAY_PATH,
               })
               .setColor(color)
-              .setTitle(`${track.title} by ${track.author}`)
+              .setFooter({
+                text: `${bot.user?.username} by @heapy (@heapybruh on GitHub)`,
+                iconURL: process.env.LOGO_PATH,
+              })
+              .setTitle(track.title)
+              .setTimestamp(Date.now())
               .setThumbnail(track.artworkUrl)
               .setURL(track.url),
           ],
@@ -93,7 +113,8 @@ export function initEvents() {
           track.requester
             ? `requester: @${track.requester.username} (${track.requester.id})`
             : undefined,
-          `track: ${track.title} by ${track.author}`,
+          `track: ${track.title}`,
+          `author: ${track.author}`,
           `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
         ])
     }
@@ -108,7 +129,8 @@ export function initEvents() {
           track.requester
             ? `requester: @${track.requester.username} (${track.requester.id})`
             : undefined,
-          `track: ${track.title} by ${track.author}`,
+          `track: ${track.title}`,
+          `author: ${track.author}`,
           `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
         ])
 
@@ -146,7 +168,8 @@ export function initEvents() {
           track.requester
             ? `requester: @${track.requester.username} (${track.requester.id})`
             : undefined,
-          `track: ${track.title} by ${track.author}`,
+          `track: ${track.title}`,
+          `author: ${track.author}`,
         ])
 
       await player.skip()
