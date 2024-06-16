@@ -37,6 +37,12 @@ export class Skip {
       return
     }
 
+    if (player.queue.size == 0 && player.autoPlay) {
+      await player.seek(player.current.duration - 1000)
+      await interaction.reply("Skipped 1 song")
+      return
+    }
+
     if (!amount) amount = 1
 
     if (amount > player.queue.size) {
