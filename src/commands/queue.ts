@@ -32,7 +32,7 @@ function GeneratePages(
           (track, index) =>
             (description =
               description +
-              `\n${(pageIndex == 0 ? 0 : 1) + index + pageIndex * 20}. [${track.title}](${track.url}) by **${track.author}**`)
+              `\n${(pageIndex == 0 ? 0 : 1) + index + pageIndex * 20}. [${track.title} by **${track.author}**](${track.url})`)
         )
 
         return description
