@@ -3,7 +3,6 @@ import { importx, dirname } from "@discordx/importer"
 import { Console } from "./utils/console.js"
 import { initEvents } from "./utils/events.js"
 import { DiscordClient, MoonlinkClient } from "./utils/clients.js"
-import { MoonlinkManager } from "moonlink.js"
 import { HexColorString } from "discord.js"
 
 dotenv.config()

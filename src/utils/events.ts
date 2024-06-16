@@ -112,7 +112,11 @@ export function initEvents() {
           `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
         ])
 
-      if (track.position + 1 >= player.queue.size && player.autoPlay) {
+      if (
+        track.position + 1 >= player.queue.size &&
+        player.autoPlay &&
+        !track.url.includes("www.youtube.com") // all YouTube URL types get converted to "www.youtube.com" one
+      ) {
         const channel = bot.channels.cache.get(
           player.textChannel
         ) as TextChannel
