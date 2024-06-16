@@ -90,6 +90,7 @@ export function initEvents() {
             ? `requester: @${track.requester.username} (${track.requester.id})`
             : undefined,
           `track: ${track.title} by ${track.author}`,
+          `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
         ])
     }
   )
@@ -104,6 +105,7 @@ export function initEvents() {
             ? `requester: @${track.requester.username} (${track.requester.id})`
             : undefined,
           `track: ${track.title} by ${track.author}`,
+          `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
         ])
 
       if (track.position + 1 >= player.queue.size && player.autoPlay) {
