@@ -1,6 +1,7 @@
-import { Interaction, TextChannel } from "discord.js"
-import { bot, console } from "../index.js"
+import { EmbedBuilder, Interaction, TextChannel } from "discord.js"
+import { bot, color, console } from "../index.js"
 import { MoonlinkNode, MoonlinkPlayer, MoonlinkTrack } from "moonlink.js"
+import { secondsToDuration } from "./duration.js"
 
 export function initEvents() {
   bot.on("ready", async () => {
@@ -64,7 +65,23 @@ export function initEvents() {
     async (player: MoonlinkPlayer, track: MoonlinkTrack) => {
       const channel = bot.channels.cache.get(player.textChannel) as TextChannel
       if (channel)
-        channel.send(`\`${track.title}\` by \`${track.author}\` is playing`)
+        channel.send({
+          embeds: [
+            new EmbedBuilder()
+              .addFields({
+                name: "Duration",
+                value: secondsToDuration(Math.floor(track.duration / 1000)),
+              })
+              .setAuthor({
+                name: "Now Playing",
+                iconURL: process.env.PLAY_PATH,
+              })
+              .setColor(color)
+              .setTitle(`${track.title} by ${track.author}`)
+              .setThumbnail(track.artworkUrl)
+              .setURL(track.url),
+          ],
+        })
 
       if (process.env.DEBUG)
         console.debug("trackStart", [
