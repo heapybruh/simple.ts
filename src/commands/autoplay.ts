@@ -13,11 +13,11 @@ export class Autoplay {
     @SlashChoice({ name: "Disabled", value: false })
     @SlashOption({
       description: "Enable or disable autoplay",
-      name: "autoplay",
+      name: "enabled",
       required: true,
       type: ApplicationCommandOptionType.Boolean,
     })
-    autoPlay: boolean,
+    enabled: boolean,
     interaction: CommandInteraction
   ): Promise<void> {
     if (!bot.moon.isConnected) {
@@ -40,10 +40,10 @@ export class Autoplay {
       return
     }
 
-    player.autoPlay = autoPlay
+    player.setAutoPlay(enabled)
 
     await interaction.reply(
-      `${autoPlay ? ":green_circle: Enabled" : ":red_circle: Disabled"} autoplay!`
+      `${enabled ? ":green_circle: Enabled" : ":red_circle: Disabled"} autoplay!`
     )
   }
 }
