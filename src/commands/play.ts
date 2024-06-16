@@ -81,11 +81,15 @@ export class Play {
       return
     }
 
-    if (results.loadType == "playlist") {
-      const duration = secondsToDuration(
-        Math.floor(results.playlistInfo!.duration / 1000)
+    const duration = secondsToDuration(
+      Math.floor(
+        results.loadType == "playlist"
+          ? results.playlistInfo!.duration / 1000
+          : results.tracks[0].duration / 1000
       )
+    )
 
+    if (results.loadType == "playlist") {
       await interaction.reply({
         embeds: [
           new EmbedBuilder()
@@ -110,10 +114,6 @@ export class Play {
       for (const track of results.tracks) player.queue.add(track)
     } else {
       player.queue.add(results.tracks[0])
-      const duration = secondsToDuration(
-        Math.floor(results.tracks[0].duration / 1000)
-      )
-
       await interaction.reply({
         embeds: [
           new EmbedBuilder()
