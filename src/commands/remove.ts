@@ -78,7 +78,8 @@ export class Remove {
           .setFooter({
             text: `@${interaction.user.username} used /remove`,
             iconURL: process.env.LOGO_PATH,
-          }),
+          })
+          .setTimestamp(Date.now()),
       ],
     })
   }
