@@ -15,7 +15,7 @@ function GeneratePages(
   const getQueue = queue.getQueue()
   const currentTrack = player.current as MoonlinkTrack
   const nowPlaying = currentTrack
-    ? `Current track: ${currentTrack.title} by ${currentTrack.author}`
+    ? `Current Track: ${currentTrack.title} by ${currentTrack.author}`
     : null
 
   const pages = Array.from(Array(Math.ceil(queue.size / 20)).keys()).map(
@@ -132,7 +132,7 @@ export class Queue {
                 iconURL: process.env.QUEUE_PATH,
               })
               .setColor(color)
-              .setDescription("Use **/queue** again to get the queue.")
+              .setDescription("Use **/queue** again to get the queue")
               .setFooter({
                 text: `@${interaction.member?.user.username} used /queue`,
                 iconURL: process.env.LOGO_PATH,
