@@ -1,6 +1,10 @@
-import { ApplicationCommandOptionType, CommandInteraction } from "discord.js"
+import {
+  ApplicationCommandOptionType,
+  CommandInteraction,
+  EmbedBuilder,
+} from "discord.js"
 import { Discord, Slash, SlashOption } from "discordx"
-import { bot } from "../index.js"
+import { bot, color } from "../index.js"
 
 @Discord()
 export class Remove {
@@ -60,8 +64,22 @@ export class Remove {
 
     const track = queue[position - 1]
     player.queue.remove(position)
-    await interaction.reply(
-      `Removed \`${track.title}\` by \`${track.author}\` from queue`
-    )
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setAuthor({
+            name: "Removed track",
+            iconURL: process.env.QUEUE_PATH,
+          })
+          .setColor(color)
+          .setDescription(
+            `Successfully removed [${track.title} by **${track.author}**](${track.url}) from queue :notes:`
+          )
+          .setFooter({
+            text: `@${interaction.user.username} used /remove`,
+            iconURL: process.env.LOGO_PATH,
+          }),
+      ],
+    })
   }
 }
