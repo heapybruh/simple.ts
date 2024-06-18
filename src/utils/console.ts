@@ -7,12 +7,14 @@ export class Console {
     console.log(`${this._prefix} ${message}`)
   }
 
-  public debug(title: string, fields: (string | undefined)[]): void {
+  public debug(title: string, fields?: (string | undefined)[]): void {
     var description = ``
 
-    fields.map((value) => {
-      if (value) description = description + `\n                    >> ${value}`
-    })
+    if (fields)
+      fields.map((value) => {
+        if (value)
+          description = description + `\n                    >> ${value}`
+      })
 
     console.log(
       `${this._prefix} ${chalk.green.bold("DEBUG >>")} ${chalk.bgGreen(` ${title} `)} ${description}`
