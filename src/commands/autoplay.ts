@@ -58,7 +58,7 @@ export class Autoplay {
             `Successfully changed autoplay mode to: ${enabled ? "**Enabled** :green_circle:" : "**Disabled** :red_circle:"}`
           )
           .setFooter({
-            text: `@${interaction.user.username} used /autoplay`,
+            text: `@${interaction.user.username} used /${interaction.command!.name}`,
             iconURL: process.env.LOGO_PATH,
           })
           .setTimestamp(Date.now()),

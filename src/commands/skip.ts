@@ -85,7 +85,7 @@ export class Skip {
             `Successfully skipped ${amount} ${amount > 1 ? "tracks" : "track"} :notes:`
           )
           .setFooter({
-            text: `@${interaction.user.username} used /skip`,
+            text: `@${interaction.user.username} used /${interaction.command!.name}`,
             iconURL: process.env.LOGO_PATH,
           })
           .setTimestamp(Date.now()),

@@ -76,7 +76,7 @@ export class Remove {
             `Successfully removed [${track.title} by **${track.author}**](${track.url}) from queue :notes:`
           )
           .setFooter({
-            text: `@${interaction.user.username} used /remove`,
+            text: `@${interaction.user.username} used /${interaction.command!.name}`,
             iconURL: process.env.LOGO_PATH,
           })
           .setTimestamp(Date.now()),

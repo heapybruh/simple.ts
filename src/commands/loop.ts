@@ -78,7 +78,7 @@ export class Loop {
           .setColor(color)
           .setDescription(`Successfully changed loop mode to: **${modeName}**`)
           .setFooter({
-            text: `@${interaction.user.username} used /loop`,
+            text: `@${interaction.user.username} used /${interaction.command!.name}`,
             iconURL: process.env.LOGO_PATH,
           })
           .setTimestamp(Date.now()),

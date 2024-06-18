@@ -113,7 +113,7 @@ export class Play {
             })
             .setColor(color)
             .setFooter({
-              text: `@${member.user.username} used /play`,
+              text: `@${member.user.username} used /${interaction.command!.name}`,
               iconURL: process.env.LOGO_PATH,
             })
             .setTimestamp(Date.now())
@@ -152,7 +152,7 @@ export class Play {
             })
             .setColor(color)
             .setFooter({
-              text: `@${member.user.username} used /play`,
+              text: `@${member.user.username} used /${interaction.command!.name}`,
               iconURL: process.env.LOGO_PATH,
             })
             .setTimestamp(Date.now())

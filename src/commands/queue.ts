@@ -136,7 +136,7 @@ export class Queue {
                 "Use **/queue** again to get the queue :sleeping:"
               )
               .setFooter({
-                text: `@${interaction.member?.user.username} used /queue`,
+                text: `@${interaction.member?.user.username} used /${interaction.command!.name}`,
                 iconURL: process.env.LOGO_PATH,
               })
               .setTimestamp(Date.now()),
