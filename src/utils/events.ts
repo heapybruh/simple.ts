@@ -87,7 +87,7 @@ export function initEvents() {
                   name: "Requested by",
                   value: track.requester
                     ? `<@${track.requester.id}>`
-                    : "Not Found",
+                    : "Autoplay",
                   inline: true,
                 }
               )
