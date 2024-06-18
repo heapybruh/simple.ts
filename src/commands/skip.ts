@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType, CommandInteraction } from "discord.js"
 import { Discord, Slash, SlashOption } from "discordx"
 import { bot } from "../index.js"
+import { MoonlinkTrack } from "moonlink.js"
 
 @Discord()
 export class Skip {
@@ -37,9 +38,9 @@ export class Skip {
       return
     }
 
-    const queue = player.queue
+    const queue = player.queue.getQueue()
 
-    if (queue.size == 0 && player.autoPlay) {
+    if (queue.length == 0 && player.autoPlay) {
       await player.seek(player.current.duration - 1000)
       await interaction.reply("Skipped 1 track")
       return
@@ -47,7 +48,7 @@ export class Skip {
 
     if (!amount) amount = 1
 
-    if (amount > queue.size) {
+    if (amount > queue.length) {
       await interaction.reply({
         content: "Amount is higher than queue size",
         ephemeral: true,
@@ -56,7 +57,18 @@ export class Skip {
       return
     }
 
-    await player.skip(amount)
+    var skippedTracks = queue.splice(0, amount)
+    var newCurrent = skippedTracks[skippedTracks.length - 1]
+    player.manager.emit(
+      "playerSkipped",
+      player,
+      <MoonlinkTrack>player.current,
+      newCurrent
+    )
+    player.current = newCurrent
+    player.queue.setQueue(queue)
+    await player.play(newCurrent)
+
     await interaction.reply(
       `Skipped ${amount} ${amount > 1 ? "tracks" : "track"}`
     )
