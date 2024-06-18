@@ -16,7 +16,7 @@ export class Play {
   })
   async play(
     @SlashOption({
-      description: "Query that will be used for searching song(s)",
+      description: "Query that will be used for searching track(s)",
       name: "query",
       required: true,
       type: ApplicationCommandOptionType.String,
@@ -69,13 +69,13 @@ export class Play {
 
     if (results.loadType == "error") {
       await interaction.reply({
-        content: "Error has occurred while getting song(s)",
+        content: "Error has occurred while getting track(s)",
       })
 
       return
     } else if (results.loadType == "empty") {
       await interaction.reply({
-        content: "Couldn't find song(s)",
+        content: "Couldn't find track(s)",
       })
 
       return
@@ -147,7 +147,7 @@ export class Play {
               }
             )
             .setAuthor({
-              name: "Added song to queue",
+              name: "Added track to queue",
               iconURL: process.env.QUEUE_PATH,
             })
             .setColor(color)

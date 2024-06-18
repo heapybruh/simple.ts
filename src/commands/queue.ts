@@ -96,7 +96,7 @@ function GeneratePages(
 @Discord()
 export class Queue {
   @Slash({
-    description: "Returns list of songs that are currently in queue",
+    description: "Returns list of tracks that are currently in queue",
     name: "queue",
   })
   async queue(interaction: CommandInteraction): Promise<void> {

@@ -5,12 +5,12 @@ import { bot } from "../index.js"
 @Discord()
 export class Remove {
   @Slash({
-    description: "Removes song from queue",
+    description: "Removes track from queue",
     name: "remove",
   })
   async remove(
     @SlashOption({
-      description: "Song's position",
+      description: "Track's position",
       name: "position",
       required: true,
       type: ApplicationCommandOptionType.Number,
@@ -51,7 +51,7 @@ export class Remove {
 
     if (position > queue.length) {
       await interaction.reply({
-        content: "There is no song at this position",
+        content: "There is no track at this position",
         ephemeral: true,
       })
 

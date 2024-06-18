@@ -5,12 +5,12 @@ import { bot } from "../index.js"
 @Discord()
 export class Skip {
   @Slash({
-    description: "Skips song(s)",
+    description: "Skips track(s)",
     name: "skip",
   })
   async skip(
     @SlashOption({
-      description: "Amount of songs you want to skip",
+      description: "Amount of tracks you want to skip",
       name: "amount",
       type: ApplicationCommandOptionType.Number,
     })
@@ -26,7 +26,7 @@ export class Skip {
       return
     }
 
-    var player = bot.moon.players.get(interaction.guildId!)
+    const player = bot.moon.players.get(interaction.guildId!)
 
     if (!player) {
       await interaction.reply({
@@ -37,15 +37,17 @@ export class Skip {
       return
     }
 
-    if (player.queue.size == 0 && player.autoPlay) {
+    const queue = player.queue
+
+    if (queue.size == 0 && player.autoPlay) {
       await player.seek(player.current.duration - 1000)
-      await interaction.reply("Skipped 1 song")
+      await interaction.reply("Skipped 1 track")
       return
     }
 
     if (!amount) amount = 1
 
-    if (amount > player.queue.size) {
+    if (amount > queue.size) {
       await interaction.reply({
         content: "Amount is higher than queue size",
         ephemeral: true,
@@ -56,7 +58,7 @@ export class Skip {
 
     await player.skip(amount)
     await interaction.reply(
-      `Skipped ${amount} ${amount > 1 ? `songs` : "song"}`
+      `Skipped ${amount} ${amount > 1 ? "tracks" : "track"}`
     )
   }
 }
