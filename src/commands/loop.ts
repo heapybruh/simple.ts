@@ -6,7 +6,7 @@ import {
 import { Discord, Slash, SlashChoice, SlashOption } from "discordx"
 import { bot, color } from "../index.js"
 
-enum LoopOption {
+enum LoopMode {
   CURRENT_TRACK,
   QUEUE,
   DISABLED,
@@ -19,16 +19,16 @@ export class Loop {
     name: "loop",
   })
   async loop(
-    @SlashChoice({ name: "Current Track", value: LoopOption.CURRENT_TRACK })
-    @SlashChoice({ name: "Queue", value: LoopOption.QUEUE })
-    @SlashChoice({ name: "Disabled", value: LoopOption.DISABLED })
+    @SlashChoice({ name: "Current Track", value: LoopMode.CURRENT_TRACK })
+    @SlashChoice({ name: "Queue", value: LoopMode.QUEUE })
+    @SlashChoice({ name: "Disabled", value: LoopMode.DISABLED })
     @SlashOption({
-      name: "option",
-      description: "Select loop option",
+      name: "mode",
+      description: "Select loop mode",
       required: true,
       type: ApplicationCommandOptionType.Number,
     })
-    option: number,
+    mode: number,
     interaction: CommandInteraction
   ) {
     if (!bot.moon.isConnected) {
@@ -51,20 +51,20 @@ export class Loop {
       return
     }
 
-    var optionName
+    var modeName
 
-    switch (option) {
-      case LoopOption.CURRENT_TRACK:
+    switch (mode) {
+      case LoopMode.CURRENT_TRACK:
         player.setLoop("track")
-        optionName = "Current Track"
+        modeName = "Current Track"
         break
-      case LoopOption.QUEUE:
+      case LoopMode.QUEUE:
         player.setLoop("queue")
-        optionName = "Queue"
+        modeName = "Queue"
         break
-      case LoopOption.DISABLED:
+      case LoopMode.DISABLED:
         player.setLoop("off")
-        optionName = "Disabled"
+        modeName = "Disabled"
         break
     }
 
@@ -76,9 +76,7 @@ export class Loop {
             iconURL: process.env.LOOP_PATH,
           })
           .setColor(color)
-          .setDescription(
-            `Successfully changed loop mode to: **${optionName}**`
-          )
+          .setDescription(`Successfully changed loop mode to: **${modeName}**`)
           .setFooter({
             text: `@${interaction.user.username} used /loop`,
             iconURL: process.env.LOGO_PATH,
