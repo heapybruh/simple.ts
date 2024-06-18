@@ -1,6 +1,10 @@
-import { ApplicationCommandOptionType, CommandInteraction } from "discord.js"
+import {
+  ApplicationCommandOptionType,
+  CommandInteraction,
+  EmbedBuilder,
+} from "discord.js"
 import { Discord, Slash, SlashChoice, SlashOption } from "discordx"
-import { bot } from "../index.js"
+import { bot, color } from "../index.js"
 
 @Discord()
 export class Autoplay {
@@ -42,8 +46,23 @@ export class Autoplay {
 
     player.setAutoPlay(enabled)
 
-    await interaction.reply(
-      `${enabled ? ":green_circle: Enabled" : ":red_circle: Disabled"} autoplay!`
-    )
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setAuthor({
+            name: "Changed autoplay mode",
+            iconURL: process.env.AUTOPLAY_PATH,
+          })
+          .setColor(color)
+          .setDescription(
+            `${enabled ? ":green_circle:" : ":red_circle:"} Successfully ${enabled ? "**enabled**" : "**diabled**"} autoplay`
+          )
+          .setFooter({
+            text: `@${interaction.user.username} used /autoplay`,
+            iconURL: process.env.LOGO_PATH,
+          })
+          .setTimestamp(Date.now()),
+      ],
+    })
   }
 }
