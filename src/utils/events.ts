@@ -137,8 +137,8 @@ export function initEvents() {
       if (
         player.queue.size == 0 && // Queue is empty, last track (in queue) just ended
         player.autoPlay && // Autoplay is enabled
-        !track.url.includes("www.youtube.com") // all YouTube URL types get converted to "www.youtube.com" one
-        // Only YouTube tracks work with Autoplay at the moment
+        !track.url.includes("www.youtube.com") && // all YouTube URL types get converted to "www.youtube.com"
+        !track.url.indexOf("soundcloud.com") // all SoundCloud URL types get converted to "soundcloud.com"
       ) {
         const channel = bot.channels.cache.get(
           player.textChannel
@@ -146,7 +146,7 @@ export function initEvents() {
 
         if (channel)
           channel.send(
-            ":red_circle: Autoplay was enabled and last track wasn't a YouTube track. Autoplay currently works only with YouTube tracks, disconnecting..."
+            ":red_circle: Autoplay was enabled and last track wasn't a YouTube/SoundCloud track. Autoplay currently works only with YouTube & SoundCloud tracks, disconnecting..."
           )
 
         await player.destroy()
