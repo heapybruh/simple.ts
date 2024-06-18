@@ -135,9 +135,10 @@ export function initEvents() {
         ])
 
       if (
-        track.position + 1 >= player.queue.size &&
-        player.autoPlay &&
+        player.queue.size == 0 && // Queue is empty, last track (in queue) just ended
+        player.autoPlay && // Autoplay is enabled
         !track.url.includes("www.youtube.com") // all YouTube URL types get converted to "www.youtube.com" one
+        // Only YouTube tracks work with Autoplay at the moment
       ) {
         const channel = bot.channels.cache.get(
           player.textChannel
