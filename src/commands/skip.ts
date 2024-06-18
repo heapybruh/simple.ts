@@ -45,7 +45,7 @@ export class Skip {
     const queue = player.queue.getQueue()
 
     if (queue.length == 0 && player.autoPlay) {
-      await player.seek(player.current.duration - 1000)
+      await player.seek(player.current.duration - 1)
       await interaction.reply("Skipped 1 track")
       return
     }
