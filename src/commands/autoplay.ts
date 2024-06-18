@@ -55,7 +55,7 @@ export class Autoplay {
           })
           .setColor(color)
           .setDescription(
-            `${enabled ? ":green_circle:" : ":red_circle:"} Successfully ${enabled ? "**enabled**" : "**diabled**"} autoplay`
+            `Successfully ${enabled ? "**Enabled**" : "**Disabled**"} autoplay ${enabled ? ":green_circle:" : ":red_circle:"}`
           )
           .setFooter({
             text: `@${interaction.user.username} used /autoplay`,

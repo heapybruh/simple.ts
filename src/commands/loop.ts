@@ -56,15 +56,15 @@ export class Loop {
     switch (mode) {
       case LoopMode.CURRENT_TRACK:
         player.setLoop("track")
-        modeName = "Current Track"
+        modeName = "Current Track :notes:"
         break
       case LoopMode.QUEUE:
         player.setLoop("queue")
-        modeName = "Queue"
+        modeName = "Queue :notepad_spiral:"
         break
       case LoopMode.DISABLED:
         player.setLoop("off")
-        modeName = "Disabled"
+        modeName = "Disabled :red_circle:"
         break
     }
 
