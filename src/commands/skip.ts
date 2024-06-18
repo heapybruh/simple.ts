@@ -1,6 +1,10 @@
-import { ApplicationCommandOptionType, CommandInteraction } from "discord.js"
+import {
+  ApplicationCommandOptionType,
+  CommandInteraction,
+  EmbedBuilder,
+} from "discord.js"
 import { Discord, Slash, SlashOption } from "discordx"
-import { bot } from "../index.js"
+import { bot, color } from "../index.js"
 import { MoonlinkTrack } from "moonlink.js"
 
 @Discord()
@@ -69,8 +73,23 @@ export class Skip {
     player.queue.setQueue(queue)
     await player.play(newCurrent)
 
-    await interaction.reply(
-      `Skipped ${amount} ${amount > 1 ? "tracks" : "track"}`
-    )
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setAuthor({
+            name: "Skipped track(s)",
+            iconURL: process.env.QUEUE_PATH,
+          })
+          .setColor(color)
+          .setDescription(
+            `Successfully skipped ${amount} ${amount > 1 ? "tracks" : "track"} :notes:`
+          )
+          .setFooter({
+            text: `@${interaction.user.username} used /skip`,
+            iconURL: process.env.LOGO_PATH,
+          })
+          .setTimestamp(Date.now()),
+      ],
+    })
   }
 }
