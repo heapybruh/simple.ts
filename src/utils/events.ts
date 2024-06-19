@@ -173,7 +173,11 @@ export function initEvents() {
           `author: ${track.author}`,
         ])
 
-      await player.skip()
+      const queue = player.queue.getQueue()
+
+      if (queue.length == 0 && player.autoPlay)
+        await player.seek(player.current.duration - 1)
+      else await player.skip()
     }
   )
 
