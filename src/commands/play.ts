@@ -11,7 +11,7 @@ import { secondsToDuration } from "../utils/duration.js"
 export class Play {
   @Slash({
     description:
-      "Plays music from multiple platforms such as YouTube, SoundCloud or Spotify",
+      "Adds requested track(s) (YouTube, SoundCloud or Spotify) to queue",
     name: "play",
   })
   async play(
