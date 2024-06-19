@@ -54,7 +54,13 @@ export class Lyrics {
     if (!value)
       return await interaction.editReply("invalid song id, select again")
 
-    const song = await genius.songs.get(Number(value))
+    try {
+      var song = await genius.songs.get(Number(value))
+    } catch (error) {
+      await interaction.editReply("Unable to get lyrics")
+      return
+    }
+
     const lyricsList = (await song.lyrics()).split("\n")
     const lyrics: string[] = [""]
     var index = 0
@@ -144,7 +150,12 @@ export class Lyrics {
 
     await interaction.deferReply({ ephemeral: true })
 
-    const songs = await genius.songs.search(query)
+    try {
+      var songs = await genius.songs.search(query)
+    } catch (error) {
+      await interaction.editReply("Unable to get lyrics")
+      return
+    }
 
     const selectMenu = new StringSelectMenuBuilder()
       .setCustomId("lyrics")
