@@ -56,27 +56,30 @@ export class Lyrics {
 
     try {
       var song = await genius.songs.get(Number(value))
+      var lyrics = await song.lyrics()
     } catch (error) {
       await interaction.editReply("Unable to get lyrics")
       return
     }
 
-    const lyricsList = (await song.lyrics()).split("\n")
-    const lyrics: string[] = [""]
+    const lyricsList = lyrics.split("\n")
+    const lyricsPages: string[] = [""]
     var index = 0
 
     lyricsList.map((line) => {
-      if (lyrics[index].length < 1024)
+      if (lyricsPages[index].length < 1024)
         // ~1024 characters per page
-        lyrics[index] =
-          lyrics[index] + "\n" + (line.match(annotation) ? `**${line}**` : line)
+        lyricsPages[index] =
+          lyricsPages[index] +
+          "\n" +
+          (line.match(annotation) ? `**${line}**` : line)
       else {
-        lyrics.push(line)
+        lyricsPages.push(line)
         index++
       }
     })
 
-    new Pagination(interaction, GeneratePages(song, lyrics), {
+    new Pagination(interaction, GeneratePages(song, lyricsPages), {
       type: PaginationType.Button,
       time: 120 * 1000,
       async onTimeout(page, message) {
