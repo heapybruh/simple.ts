@@ -22,7 +22,7 @@ export function initEvents() {
   bot.on("interactionCreate", (interaction: Interaction) => {
     bot.executeInteraction(interaction)
 
-    if (process.env.DEBUG)
+    if (process.env.DEBUG_interactionCreate)
       console.debug("interaction", [
         `guild: ${interaction.guildId}`,
         `user: @${interaction.user.username} (${interaction.user.id})`,
@@ -43,7 +43,7 @@ export function initEvents() {
     )
       if (oldState.channel?.members.size == 1) await player.destroy()
 
-    if (process.env.DEBUG)
+    if (process.env.DEBUG_voiceStateUpdate)
       console.debug("voiceStateUpdate", [
         `user: @${newState.member?.user.username} (${newState.member?.user.id})`,
         `oldState: ${oldState.channelId}`,
@@ -55,12 +55,12 @@ export function initEvents() {
     bot.moon.isConnected = true
     console.print("Connected to Lavalink")
 
-    if (process.env.DEBUG)
+    if (process.env.DEBUG_nodeCreate)
       console.debug("nodeCreate", [`host: ${node.host}:${node.port}`])
   })
 
   bot.moon.on("nodeError", (node: MoonlinkNode, error: Error) => {
-    if (process.env.DEBUG)
+    if (process.env.DEBUG_nodeError)
       console.debug("nodeError", [`error: ${error.message}`])
   })
 
@@ -107,7 +107,7 @@ export function initEvents() {
           ],
         })
 
-      if (process.env.DEBUG)
+      if (process.env.DEBUG_trackStart)
         console.debug("trackStart", [
           `guild: ${player.guildId}`,
           track.requester
@@ -123,7 +123,7 @@ export function initEvents() {
   bot.moon.on(
     "trackEnd",
     async (player: MoonlinkPlayer, track: MoonlinkTrack) => {
-      if (process.env.DEBUG)
+      if (process.env.DEBUG_trackEnd)
         console.debug("trackEnd", [
           `guild: ${player.guildId}`,
           track.requester
@@ -163,7 +163,7 @@ export function initEvents() {
           `Error has occurred while playing \`${track.title}\` by \`${track.author}\`, skipping...`
         )
 
-      if (process.env.DEBUG)
+      if (process.env.DEBUG_trackError)
         console.debug("trackError", [
           `guild: ${player.guildId}`,
           track.requester
@@ -183,13 +183,13 @@ export function initEvents() {
 
   bot.moon.on("queueEnd", async (player: MoonlinkPlayer) => {
     await player.destroy()
-    if (process.env.DEBUG)
+    if (process.env.DEBUG_queueEnd)
       console.debug("queueEnd", [`guild: ${player.guildId}`])
   })
 
   bot.moon.on("playerDisconnect", async (player: MoonlinkPlayer) => {
     await player.destroy()
-    if (process.env.DEBUG)
+    if (process.env.DEBUG_playerDisconnect)
       console.debug("playerDisconnect", [`guild: ${player.guildId}`])
   })
 }
