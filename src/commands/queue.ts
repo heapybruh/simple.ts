@@ -62,9 +62,9 @@ function GeneratePages(
               text: "Queue will expire after 60 seconds of inactivity",
               iconURL: process.env.LOGO_PATH,
             })
+            .setThumbnail(currentTrack ? currentTrack.artworkUrl : null)
             .setTimestamp(Date.now())
             .setTitle(nowPlaying)
-            .setThumbnail(currentTrack ? currentTrack.artworkUrl : null)
             .setURL(currentTrack ? currentTrack.url : null),
         ],
       },
@@ -84,9 +84,9 @@ function GeneratePages(
             text: "Queue will expire after 60 seconds of inactivity",
             iconURL: process.env.LOGO_PATH,
           })
+          .setThumbnail(currentTrack ? currentTrack.artworkUrl : null)
           .setTimestamp(Date.now())
           .setTitle(nowPlaying)
-          .setThumbnail(currentTrack ? currentTrack.artworkUrl : null)
           .setURL(currentTrack ? currentTrack.url : null),
       ],
     }

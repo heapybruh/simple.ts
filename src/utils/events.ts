@@ -100,9 +100,9 @@ export function initEvents() {
                 text: `${bot.user?.username} by @heapy (@heapybruh on GitHub)`,
                 iconURL: process.env.LOGO_PATH,
               })
+              .setThumbnail(track.artworkUrl)
               .setTitle(track.title)
               .setTimestamp(Date.now())
-              .setThumbnail(track.artworkUrl)
               .setURL(track.url),
           ],
         })

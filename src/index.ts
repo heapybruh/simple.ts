@@ -4,8 +4,13 @@ import { Console } from "./utils/console.js"
 import { initEvents } from "./utils/events.js"
 import { DiscordClient, MoonlinkClient } from "./utils/clients.js"
 import { HexColorString } from "discord.js"
+import { Client as Genius } from "genius-lyrics"
 
 dotenv.config()
+
+export const genius: Genius = new Genius(
+  process.env.GENIUS_API_KEY ? process.env.GENIUS_API_KEY : undefined
+)
 
 export const color: HexColorString = `#${process.env.EMBED_COLOR}`
 

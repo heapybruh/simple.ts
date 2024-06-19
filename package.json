@@ -19,6 +19,7 @@
     "discord.js": "^14.15.3",
     "discordx": "^11.9.4",
     "dotenv": "^16.4.5",
+    "genius-lyrics": "^4.4.7",
     "moonlink.js": "github:heapybruh/moonlink.js"
   },
   "devDependencies": {

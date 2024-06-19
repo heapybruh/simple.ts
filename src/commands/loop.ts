@@ -30,7 +30,7 @@ export class Loop {
     })
     mode: number,
     interaction: CommandInteraction
-  ) {
+  ): Promise<void> {
     if (!bot.moon.isConnected) {
       await interaction.reply({
         content: "Not connected to Lavalink server",

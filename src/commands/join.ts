@@ -22,7 +22,7 @@ export class Join {
       interaction.member?.user.id!
     )
 
-    if (!member?.voice) {
+    if (!member?.voice || member.voice.guild.id != interaction.guildId) {
       await interaction.reply({
         content: "You are not in a voice channel",
         ephemeral: true,

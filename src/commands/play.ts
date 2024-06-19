@@ -37,7 +37,7 @@ export class Play {
       interaction.member?.user.id!
     )
 
-    if (!member?.voice) {
+    if (!member?.voice || member.voice.guild.id != interaction.guildId) {
       await interaction.reply({
         content: "You are not in a voice channel",
         ephemeral: true,
@@ -155,9 +155,9 @@ export class Play {
               text: `@${member.user.username} used /${interaction.command!.name}`,
               iconURL: process.env.LOGO_PATH,
             })
+            .setImage(results.tracks[0].artworkUrl)
             .setTimestamp(Date.now())
             .setTitle(results.tracks[0].title)
-            .setImage(results.tracks[0].artworkUrl)
             .setURL(results.tracks[0].url),
         ],
       })
