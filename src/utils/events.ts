@@ -2,9 +2,14 @@ import { EmbedBuilder, Interaction, TextChannel } from "discord.js"
 import { bot, color, console } from "../index.js"
 import { MoonlinkNode, MoonlinkPlayer, MoonlinkTrack } from "moonlink.js"
 import { secondsToDuration } from "./duration.js"
+import { Presence } from "./presence.js"
 
 export function initEvents(): void {
   bot.on("ready", async () => {
+    await bot.moon.init(bot.user?.id)
+    await bot.initApplicationCommands()
+    await Presence.update()
+
     console.print(`Logged in as: ${bot.user?.username}`)
     console.print(
       `Invite your bot by using URL below\n>> https://discord.com/api/oauth2/authorize?client_id=${process.env.BOT_APPLICATION_ID}&permissions=3262464&scope=applications.commands%20bot`
@@ -12,9 +17,6 @@ export function initEvents(): void {
 
     if (process.env.DEBUG_READY)
       console.debug("ready", [`user: @${bot.user?.username} (${bot.user?.id})`])
-
-    await bot.moon.init(bot.user?.id)
-    await bot.initApplicationCommands()
   })
 
   bot.on("raw", (data: any) => bot.moon.packetUpdate(data))

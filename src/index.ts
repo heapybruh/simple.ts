@@ -5,16 +5,10 @@ import { initEvents } from "./utils/events.js"
 import { DiscordClient, MoonlinkClient } from "./utils/clients.js"
 import { HexColorString } from "discord.js"
 import { Client as Genius } from "genius-lyrics"
+import { CronJob } from "cron"
+import { Presence } from "./utils/presence.js"
 
 dotenv.config()
-
-export const genius: Genius = new Genius(
-  process.env.GENIUS_API_KEY ? process.env.GENIUS_API_KEY : undefined
-)
-
-export const color: HexColorString = `#${process.env.EMBED_COLOR}`
-
-export const console = new Console()
 
 export const bot = new DiscordClient(
   {
@@ -38,6 +32,24 @@ export const bot = new DiscordClient(
       if (guild) guild.shard.send(JSON.parse(packet))
     }
   )
+)
+
+export const color: HexColorString = `#${process.env.EMBED_COLOR}`
+
+export const console = new Console()
+
+export const richPresence = CronJob.from({
+  cronTime: "*/5 * * * *", // Every 5 minutes - https://crontab.guru/
+  onTick: async () => {
+    if (!bot.user) return
+    await Presence.update()
+  },
+  start: true,
+  timeZone: "UTC",
+})
+
+export const genius: Genius = new Genius(
+  process.env.GENIUS_API_KEY ? process.env.GENIUS_API_KEY : undefined
 )
 
 async function run() {
