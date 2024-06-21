@@ -7,7 +7,6 @@ import { Terminal } from "./terminal.js"
 
 export function initEvents(): void {
   bot.on("ready", async () => {
-    await bot.moon.init(bot.user?.id)
     await bot.initApplicationCommands()
     await Presence.update()
 
@@ -20,6 +19,8 @@ export function initEvents(): void {
       Terminal.debug("ready", [
         `user: @${bot.user?.username} (${bot.user?.id})`,
       ])
+
+    await bot.moon.init(bot.user?.id)
   })
 
   bot.on("raw", (data: any) => bot.moon.packetUpdate(data))
