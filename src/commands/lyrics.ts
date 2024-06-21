@@ -61,7 +61,7 @@ export class Lyrics {
     } catch (error: any) {
       Terminal.error("Unable to get lyrics", [
         `guild: ${interaction.guildId}`,
-        `user: ${interaction.user.id}`,
+        `user: @${interaction.user.username} (${interaction.user.id})`,
         `message: ${error.message}`,
       ])
       await interaction.editReply("Unable to get lyrics")
@@ -164,7 +164,7 @@ export class Lyrics {
     } catch (error: any) {
       Terminal.error("Unable to get lyrics", [
         `guild: ${interaction.guildId}`,
-        `user: ${interaction.user.id}`,
+        `user: @${interaction.user.username} (${interaction.user.id})`,
         `message: ${error.message}`,
       ])
       await interaction.editReply("Unable to get lyrics")
