@@ -1,8 +1,9 @@
 import { EmbedBuilder, Interaction, TextChannel } from "discord.js"
-import { bot, color, console } from "../index.js"
+import { bot, color } from "../index.js"
 import { MoonlinkNode, MoonlinkPlayer, MoonlinkTrack } from "moonlink.js"
 import { secondsToDuration } from "./duration.js"
 import { Presence } from "./presence.js"
+import { Terminal } from "./terminal.js"
 
 export function initEvents(): void {
   bot.on("ready", async () => {
@@ -10,13 +11,15 @@ export function initEvents(): void {
     await bot.initApplicationCommands()
     await Presence.update()
 
-    console.print(`Logged in as: ${bot.user?.username}`)
-    console.print(
+    Terminal.print(`Logged in as: ${bot.user?.username}`)
+    Terminal.print(
       `Invite your bot by using URL below\n>> https://discord.com/api/oauth2/authorize?client_id=${process.env.BOT_APPLICATION_ID}&permissions=3262464&scope=applications.commands%20bot`
     )
 
     if (process.env.DEBUG_READY)
-      console.debug("ready", [`user: @${bot.user?.username} (${bot.user?.id})`])
+      Terminal.debug("ready", [
+        `user: @${bot.user?.username} (${bot.user?.id})`,
+      ])
   })
 
   bot.on("raw", (data: any) => bot.moon.packetUpdate(data))
@@ -25,7 +28,7 @@ export function initEvents(): void {
     bot.executeInteraction(interaction)
 
     if (process.env.DEBUG_interactionCreate)
-      console.debug("interaction", [
+      Terminal.debug("interaction", [
         `guild: ${interaction.guildId}`,
         `user: @${interaction.user.username} (${interaction.user.id})`,
         interaction.isCommand()
@@ -46,7 +49,7 @@ export function initEvents(): void {
       if (oldState.channel?.members.size == 1) await player.destroy()
 
     if (process.env.DEBUG_voiceStateUpdate)
-      console.debug("voiceStateUpdate", [
+      Terminal.debug("voiceStateUpdate", [
         `user: @${newState.member?.user.username} (${newState.member?.user.id})`,
         `oldState: ${oldState.channelId}`,
         `newState: ${newState.channelId}`,
@@ -55,15 +58,15 @@ export function initEvents(): void {
 
   bot.moon.on("nodeCreate", (node: MoonlinkNode) => {
     bot.moon.isConnected = true
-    console.print("Connected to Lavalink")
+    Terminal.print("Connected to Lavalink")
 
     if (process.env.DEBUG_nodeCreate)
-      console.debug("nodeCreate", [`host: ${node.host}:${node.port}`])
+      Terminal.debug("nodeCreate", [`host: ${node.host}:${node.port}`])
   })
 
   bot.moon.on("nodeError", (node: MoonlinkNode, error: Error) => {
     if (process.env.DEBUG_nodeError)
-      console.debug("nodeError", [`error: ${error.message}`])
+      Terminal.debug("nodeError", [`error: ${error.message}`])
   })
 
   bot.moon.on(
@@ -110,7 +113,7 @@ export function initEvents(): void {
         })
 
       if (process.env.DEBUG_trackStart)
-        console.debug("trackStart", [
+        Terminal.debug("trackStart", [
           `guild: ${player.guildId}`,
           track.requester
             ? `requester: @${track.requester.username} (${track.requester.id})`
@@ -126,7 +129,7 @@ export function initEvents(): void {
     "trackEnd",
     async (player: MoonlinkPlayer, track: MoonlinkTrack) => {
       if (process.env.DEBUG_trackEnd)
-        console.debug("trackEnd", [
+        Terminal.debug("trackEnd", [
           `guild: ${player.guildId}`,
           track.requester
             ? `requester: @${track.requester.username} (${track.requester.id})`
@@ -166,7 +169,7 @@ export function initEvents(): void {
         )
 
       if (process.env.DEBUG_trackError)
-        console.debug("trackError", [
+        Terminal.debug("trackError", [
           `guild: ${player.guildId}`,
           track.requester
             ? `requester: @${track.requester.username} (${track.requester.id})`
@@ -186,12 +189,12 @@ export function initEvents(): void {
   bot.moon.on("queueEnd", async (player: MoonlinkPlayer) => {
     await player.destroy()
     if (process.env.DEBUG_queueEnd)
-      console.debug("queueEnd", [`guild: ${player.guildId}`])
+      Terminal.debug("queueEnd", [`guild: ${player.guildId}`])
   })
 
   bot.moon.on("playerDisconnect", async (player: MoonlinkPlayer) => {
     await player.destroy()
     if (process.env.DEBUG_playerDisconnect)
-      console.debug("playerDisconnect", [`guild: ${player.guildId}`])
+      Terminal.debug("playerDisconnect", [`guild: ${player.guildId}`])
   })
 }

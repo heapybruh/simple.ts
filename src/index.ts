@@ -1,6 +1,5 @@
 import dotenv from "dotenv"
 import { importx, dirname } from "@discordx/importer"
-import { Console } from "./utils/console.js"
 import { initEvents } from "./utils/events.js"
 import { DiscordClient, MoonlinkClient } from "./utils/clients.js"
 import { HexColorString } from "discord.js"
@@ -35,8 +34,6 @@ export const bot = new DiscordClient(
 )
 
 export const color: HexColorString = `#${process.env.EMBED_COLOR}`
-
-export const console = new Console()
 
 export const richPresence = CronJob.from({
   cronTime: "*/5 * * * *", // Every 5 minutes - https://crontab.guru/

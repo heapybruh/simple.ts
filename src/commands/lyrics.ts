@@ -8,13 +8,14 @@ import {
   StringSelectMenuInteraction,
 } from "discord.js"
 import { Discord, SelectMenuComponent, Slash, SlashOption } from "discordx"
-import { bot, color, console, genius } from "../index.js"
+import { bot, color, genius } from "../index.js"
 import { Song } from "genius-lyrics"
 import {
   Pagination,
   PaginationItem,
   PaginationType,
 } from "@discordx/pagination"
+import { Terminal } from "../utils/terminal.js"
 
 const annotation = new RegExp(String.raw`\[.+\]`)
 const titleJunk = new RegExp(String.raw`\(.+\)`, "g")
@@ -58,7 +59,7 @@ export class Lyrics {
       var song = await genius.songs.get(Number(value))
       var lyrics = await song.lyrics()
     } catch (error: any) {
-      console.error("Unable to get lyrics", [
+      Terminal.error("Unable to get lyrics", [
         `guild: ${interaction.guildId}`,
         `user: ${interaction.user.id}`,
         `message: ${error.message}`,
@@ -161,7 +162,7 @@ export class Lyrics {
     try {
       var songs = await genius.songs.search(query)
     } catch (error: any) {
-      console.error("Unable to get lyrics", [
+      Terminal.error("Unable to get lyrics", [
         `guild: ${interaction.guildId}`,
         `user: ${interaction.user.id}`,
         `message: ${error.message}`,
