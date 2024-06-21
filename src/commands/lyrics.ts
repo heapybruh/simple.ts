@@ -8,7 +8,7 @@ import {
   StringSelectMenuInteraction,
 } from "discord.js"
 import { Discord, SelectMenuComponent, Slash, SlashOption } from "discordx"
-import { bot, color, genius } from "../index.js"
+import { bot, color, console, genius } from "../index.js"
 import { Song } from "genius-lyrics"
 import {
   Pagination,
@@ -57,7 +57,12 @@ export class Lyrics {
     try {
       var song = await genius.songs.get(Number(value))
       var lyrics = await song.lyrics()
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Unable to get lyrics", [
+        `guild: ${interaction.guildId}`,
+        `user: ${interaction.user.id}`,
+        `message: ${error.message}`,
+      ])
       await interaction.editReply("Unable to get lyrics")
       return
     }
@@ -155,7 +160,12 @@ export class Lyrics {
 
     try {
       var songs = await genius.songs.search(query)
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Unable to get lyrics", [
+        `guild: ${interaction.guildId}`,
+        `user: ${interaction.user.id}`,
+        `message: ${error.message}`,
+      ])
       await interaction.editReply("Unable to get lyrics")
       return
     }

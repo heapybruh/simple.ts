@@ -3,7 +3,7 @@ import { bot, color, console } from "../index.js"
 import { MoonlinkNode, MoonlinkPlayer, MoonlinkTrack } from "moonlink.js"
 import { secondsToDuration } from "./duration.js"
 
-export function initEvents() {
+export function initEvents(): void {
   bot.on("ready", async () => {
     console.print(`Logged in as: ${bot.user?.username}`)
     console.print(
