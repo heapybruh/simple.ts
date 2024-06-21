@@ -24,11 +24,16 @@
 - [moonlink.js (fork)](https://github.com/heapybruh/moonlink.js)
 
 ## How to use?
-1. Clone the repository by using `git clone https://github.com/heapybruh/simple.ts`.
-1. Go to [Discord Developer Portal](https://discord.com/developers/applications/).
-2. Create a Bot.
+1. Clone the repository.
+```
+$ git clone https://github.com/heapybruh/simple.ts
+```
+2. Go to [Discord Developer Portal](https://discord.com/developers/applications/) and create a Bot there.
 3. Rename `.env.example` to `.env`.
 4. Copy your Bot's token and paste it into `.env`.
-5. Install packages with `npm install`.
-6. Build the source with `npm start build`.
-7. Start the Bot by using `npm start run`.
+5. Run commands below to install packages, build the project and then start the bot.
+```
+$ npm install
+$ npm start build
+$ npm start run
+```
