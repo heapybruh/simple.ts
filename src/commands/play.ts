@@ -117,7 +117,8 @@ export class Play {
               iconURL: process.env.LOGO_PATH,
             })
             .setTimestamp(Date.now())
-            .setTitle(results.playlistInfo!.name),
+            .setTitle(results.playlistInfo!.name)
+            .setURL(query),
         ],
       })
 
