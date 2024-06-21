@@ -10,7 +10,7 @@ export function initEvents() {
       `Invite your bot by using URL below\n>> https://discord.com/api/oauth2/authorize?client_id=${process.env.BOT_APPLICATION_ID}&permissions=3262464&scope=applications.commands%20bot`
     )
 
-    if (process.env.DEBUG)
+    if (process.env.DEBUG_READY)
       console.debug("ready", [`user: @${bot.user?.username} (${bot.user?.id})`])
 
     await bot.moon.init(bot.user?.id)
