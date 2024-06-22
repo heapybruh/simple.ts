@@ -171,6 +171,11 @@ export class Lyrics {
       return
     }
 
+    if (songs.length == 0) {
+      await interaction.editReply("Didn't find any lyrics with given query")
+      return
+    }
+
     const selectMenu = new StringSelectMenuBuilder()
       .setCustomId("lyrics")
       .setPlaceholder("Select a track")
