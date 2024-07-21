@@ -7,6 +7,7 @@ import {
 } from "@discordx/pagination"
 import { bot, color } from "../index.js"
 import { MoonlinkPlayer, MoonlinkQueue, MoonlinkTrack } from "moonlink.js"
+import { Terminal } from "../utils/terminal.js"
 
 function GeneratePages(
   player: MoonlinkPlayer,
@@ -100,49 +101,53 @@ export class Queue {
     name: "queue",
   })
   async queue(interaction: CommandInteraction): Promise<void> {
-    if (!bot.moon.isConnected) {
-      await interaction.reply({
-        content: "Not connected to Lavalink server",
-        ephemeral: true,
-      })
-
-      return
-    }
-
-    var player = bot.moon.players.get(interaction.guildId!)
-
-    if (!player) {
-      await interaction.reply({
-        content: "Not connected to a voice channel",
-        ephemeral: true,
-      })
-
-      return
-    }
-
-    new Pagination(interaction, GeneratePages(player, player.queue), {
-      type: PaginationType.Button,
-      time: 60 * 1000,
-      async onTimeout(page, message) {
-        await message.edit({
-          embeds: [
-            new EmbedBuilder()
-              .setAuthor({
-                name: "Queue has expired",
-                iconURL: process.env.QUEUE_PATH,
-              })
-              .setColor(color)
-              .setDescription(
-                "Use **/queue** again to get the queue :sleeping:"
-              )
-              .setFooter({
-                text: `@${interaction.member?.user.username} used /${interaction.command!.name}`,
-                iconURL: process.env.LOGO_PATH,
-              })
-              .setTimestamp(Date.now()),
-          ],
+    try {
+      if (!bot.moon.isConnected) {
+        await interaction.reply({
+          content: "Not connected to Lavalink server",
+          ephemeral: true,
         })
-      },
-    }).send()
+
+        return
+      }
+
+      var player = bot.moon.players.get(interaction.guildId!)
+
+      if (!player) {
+        await interaction.reply({
+          content: "Not connected to a voice channel",
+          ephemeral: true,
+        })
+
+        return
+      }
+
+      new Pagination(interaction, GeneratePages(player, player.queue), {
+        type: PaginationType.Button,
+        time: 60 * 1000,
+        async onTimeout(page, message) {
+          await message.edit({
+            embeds: [
+              new EmbedBuilder()
+                .setAuthor({
+                  name: "Queue has expired",
+                  iconURL: process.env.QUEUE_PATH,
+                })
+                .setColor(color)
+                .setDescription(
+                  "Use **/queue** again to get the queue :sleeping:"
+                )
+                .setFooter({
+                  text: `@${interaction.member?.user.username} used /${interaction.command!.name}`,
+                  iconURL: process.env.LOGO_PATH,
+                })
+                .setTimestamp(Date.now()),
+            ],
+          })
+        },
+      }).send()
+    } catch (e) {
+      Terminal.error(e)
+    }
   }
 }

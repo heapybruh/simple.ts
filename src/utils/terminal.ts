@@ -21,7 +21,7 @@ export class Terminal {
     )
   }
 
-  static error(title: string, fields?: (string | undefined)[]): void {
+  static error(title: any, fields?: (string | undefined)[]): void {
     var description = ``
 
     if (fields)
