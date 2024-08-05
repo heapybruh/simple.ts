@@ -9,7 +9,7 @@
 
 ## Tested with NodeLink
 *LavaLink has problems with YouTube, so I switched to NodeLink 🥱*
-- Version: `2.2.0 commit 86f3189`
+- Version: [`2.2.0 commit 86f3189`](https://github.com/PerformanC/NodeLink/commit/86f3189627dd63a66bae382d5453ae6c5f7730a1)
 
 ## Packages
 
