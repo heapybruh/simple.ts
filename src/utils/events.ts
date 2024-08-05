@@ -73,89 +73,99 @@ export function initEvents(): void {
   bot.moon.on(
     "trackStart",
     async (player: MoonlinkPlayer, track: MoonlinkTrack) => {
-      const channel = bot.channels.cache.get(player.textChannel) as TextChannel
-      if (channel)
-        channel.send({
-          embeds: [
-            new EmbedBuilder()
-              .addFields(
-                {
-                  name: "Author",
-                  value: track.author,
-                  inline: true,
-                },
-                {
-                  name: "Duration",
-                  value: secondsToDuration(Math.floor(track.duration / 1000)),
-                  inline: true,
-                },
-                {
-                  name: "Requested by",
-                  value: track.requester
-                    ? `<@${track.requester.id}>`
-                    : "Autoplay",
-                  inline: true,
-                }
-              )
-              .setAuthor({
-                name: "Now Playing",
-                iconURL: process.env.PLAY_PATH,
-              })
-              .setColor(color)
-              .setFooter({
-                text: `${bot.user?.username} by @heapy (@heapybruh on GitHub)`,
-                iconURL: process.env.LOGO_PATH,
-              })
-              .setThumbnail(track.artworkUrl)
-              .setTitle(track.title)
-              .setTimestamp(Date.now())
-              .setURL(track.url),
-          ],
-        })
+      try {
+        const channel = bot.channels.cache.get(
+          player.textChannel
+        ) as TextChannel
+        if (channel)
+          channel.send({
+            embeds: [
+              new EmbedBuilder()
+                .addFields(
+                  {
+                    name: "Author",
+                    value: track.author,
+                    inline: true,
+                  },
+                  {
+                    name: "Duration",
+                    value: secondsToDuration(Math.floor(track.duration / 1000)),
+                    inline: true,
+                  },
+                  {
+                    name: "Requested by",
+                    value: track.requester
+                      ? `<@${track.requester.id}>`
+                      : "Autoplay",
+                    inline: true,
+                  }
+                )
+                .setAuthor({
+                  name: "Now Playing",
+                  iconURL: process.env.PLAY_PATH,
+                })
+                .setColor(color)
+                .setFooter({
+                  text: `${bot.user?.username} by @heapy (@heapybruh on GitHub)`,
+                  iconURL: process.env.LOGO_PATH,
+                })
+                .setThumbnail(track.artworkUrl)
+                .setTitle(track.title)
+                .setTimestamp(Date.now())
+                .setURL(track.url),
+            ],
+          })
 
-      if (process.env.DEBUG_trackStart)
-        Terminal.debug("trackStart", [
-          `guild: ${player.guildId}`,
-          track.requester
-            ? `requester: @${track.requester.username} (${track.requester.id})`
-            : undefined,
-          `track: ${track.title}`,
-          `author: ${track.author}`,
-          `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
-        ])
+        if (process.env.DEBUG_trackStart)
+          Terminal.debug("trackStart", [
+            `guild: ${player.guildId}`,
+            track.requester
+              ? `requester: @${track.requester.username} (${track.requester.id})`
+              : undefined,
+            `track: ${track.title}`,
+            `author: ${track.author}`,
+            `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
+          ])
+      } catch (e) {
+        Terminal.error(e)
+      }
     }
   )
 
   bot.moon.on(
     "trackEnd",
     async (player: MoonlinkPlayer, track: MoonlinkTrack) => {
-      if (process.env.DEBUG_trackEnd)
-        Terminal.debug("trackEnd", [
-          `guild: ${player.guildId}`,
-          track.requester
-            ? `requester: @${track.requester.username} (${track.requester.id})`
-            : undefined,
-          `track: ${track.title}`,
-          `author: ${track.author}`,
-          `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
-        ])
+      try {
+        if (process.env.DEBUG_trackEnd)
+          Terminal.debug("trackEnd", [
+            `guild: ${player.guildId}`,
+            track.requester
+              ? `requester: @${track.requester.username} (${track.requester.id})`
+              : undefined,
+            `track: ${track.title}`,
+            `author: ${track.author}`,
+            `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
+          ])
 
-      if (
-        player.queue.size == 0 && // Queue is empty, last track (in queue) just ended
-        player.autoPlay && // Autoplay is enabled
-        !track.url.includes("www.youtube.com") && // all YouTube URL types get converted to "www.youtube.com"
-        !track.url.includes("soundcloud.com") // all SoundCloud URL types get converted to "soundcloud.com"
-      ) {
-        const channel = bot.channels.cache.get(
-          player.textChannel
-        ) as TextChannel
+        if (
+          player.queue.size == 0 && // Queue is empty, last track (in queue) just ended
+          player.autoPlay && // Autoplay is enabled
+          !track.url.includes("www.youtube.com") && // all YouTube URL types get converted to "www.youtube.com"
+          !track.url.includes("soundcloud.com") // all SoundCloud URL types get converted to "soundcloud.com"
+        ) {
+          const channel = bot.channels.cache.get(
+            player.textChannel
+          ) as TextChannel
 
-        if (channel)
-          channel.send(
-            ":red_circle: Autoplay was enabled and last track wasn't a YouTube/SoundCloud track. Autoplay currently works only with YouTube & SoundCloud tracks, disconnecting..."
-          )
+          if (channel)
+            channel.send(
+              ":red_circle: Autoplay was enabled and last track wasn't a YouTube/SoundCloud track. Autoplay currently works only with YouTube & SoundCloud tracks, disconnecting..."
+            )
 
-        await player.destroy()
+          await player.destroy()
+        }
+      } catch (e) {
+        Terminal.error(e)
       }
     }
   )
@@ -163,38 +173,46 @@ export function initEvents(): void {
   bot.moon.on(
     "trackError",
     async (player: MoonlinkPlayer, track: MoonlinkTrack) => {
-      const channel = bot.channels.cache.get(player.textChannel) as TextChannel
-      if (channel)
-        channel.send(
-          `Error has occurred while playing \`${track.title}\` by \`${track.author}\`, skipping...`
-        )
+      try {
+        const channel = bot.channels.cache.get(
+          player.textChannel
+        ) as TextChannel
+        if (channel)
+          channel.send(
+            `Error has occurred while playing \`${track.title}\` by \`${track.author}\`, skipping...`
+          )
 
-      if (process.env.DEBUG_trackError)
-        Terminal.debug("trackError", [
-          `guild: ${player.guildId}`,
-          track.requester
-            ? `requester: @${track.requester.username} (${track.requester.id})`
-            : undefined,
-          `track: ${track.title}`,
-          `author: ${track.author}`,
-        ])
+        if (process.env.DEBUG_trackError)
+          Terminal.debug("trackError", [
+            `guild: ${player.guildId}`,
+            track.requester
+              ? `requester: @${track.requester.username} (${track.requester.id})`
+              : undefined,
+            `track: ${track.title}`,
+            `author: ${track.author}`,
+          ])
 
-      const queue = player.queue.getQueue()
+        const queue = player.queue.getQueue()
 
-      if (queue.length == 0 && player.autoPlay)
-        await player.seek(player.current.duration - 1)
-      else await player.skip()
+        if (queue.length == 0 && player.autoPlay)
+          await player.seek(player.current.duration - 1)
+        else await player.skip()
+      } catch (e) {
+        Terminal.error(e)
+      }
     }
   )
 
   bot.moon.on("queueEnd", async (player: MoonlinkPlayer) => {
     await player.destroy()
+
     if (process.env.DEBUG_queueEnd)
       Terminal.debug("queueEnd", [`guild: ${player.guildId}`])
   })
 
   bot.moon.on("playerDisconnect", async (player: MoonlinkPlayer) => {
     await player.destroy()
+
     if (process.env.DEBUG_playerDisconnect)
       Terminal.debug("playerDisconnect", [`guild: ${player.guildId}`])
   })
