@@ -1,15 +1,11 @@
 import { Client, ClientOptions } from "discordx"
-import { MoonlinkManager } from "moonlink.js"
+import { Manager } from "moonlink.js"
 
 export class DiscordClient extends Client {
-  moon: MoonlinkClient
+  moon: Manager
 
-  constructor(options: ClientOptions, nodeManager: MoonlinkClient) {
+  constructor(options: ClientOptions, nodeManager: Manager) {
     super(options)
     this.moon = nodeManager
   }
-}
-
-export class MoonlinkClient extends MoonlinkManager {
-  isConnected: boolean = false
 }

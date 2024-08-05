@@ -5,7 +5,6 @@ import {
 } from "discord.js"
 import { Discord, Slash, SlashChoice, SlashOption } from "discordx"
 import { bot, color } from "../index.js"
-import { Terminal } from "../utils/terminal.js"
 
 @Discord()
 export class Autoplay {
@@ -25,49 +24,37 @@ export class Autoplay {
     enabled: boolean,
     interaction: CommandInteraction
   ): Promise<void> {
-    try {
-      if (!bot.moon.isConnected) {
-        await interaction.reply({
-          content: "Not connected to Lavalink server",
-          ephemeral: true,
-        })
+    await interaction.deferReply()
 
-        return
-      }
+    var player = bot.moon.players.get(interaction.guildId!)
 
-      var player = bot.moon.players.get(interaction.guildId!)
-
-      if (!player) {
-        await interaction.reply({
-          content: "Not connected to a voice channel",
-          ephemeral: true,
-        })
-
-        return
-      }
-
-      player.setAutoPlay(enabled)
-
-      await interaction.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setAuthor({
-              name: "Changed autoplay mode",
-              iconURL: process.env.AUTOPLAY_PATH,
-            })
-            .setColor(color)
-            .setDescription(
-              `Successfully changed autoplay mode to: ${enabled ? "**Enabled** :green_circle:" : "**Disabled** :red_circle:"}`
-            )
-            .setFooter({
-              text: `@${interaction.user.username} used /${interaction.command!.name}`,
-              iconURL: process.env.LOGO_PATH,
-            })
-            .setTimestamp(Date.now()),
-        ],
+    if (!player) {
+      await interaction.editReply({
+        content: "Not connected to a voice channel",
       })
-    } catch (e) {
-      Terminal.error(e)
+
+      return
     }
+
+    player.setAutoPlay(enabled)
+
+    await interaction.editReply({
+      embeds: [
+        new EmbedBuilder()
+          .setAuthor({
+            name: "Changed autoplay mode",
+            iconURL: process.env.AUTOPLAY_PATH,
+          })
+          .setColor(color)
+          .setDescription(
+            `Successfully changed autoplay mode to: ${enabled ? "**Enabled** :green_circle:" : "**Disabled** :red_circle:"}`
+          )
+          .setFooter({
+            text: `@${interaction.user.username} used /${interaction.command!.name}`,
+            iconURL: process.env.LOGO_PATH,
+          })
+          .setTimestamp(Date.now()),
+      ],
+    })
   }
 }

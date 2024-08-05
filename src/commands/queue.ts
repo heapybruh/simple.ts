@@ -6,15 +6,10 @@ import {
   PaginationType,
 } from "@discordx/pagination"
 import { bot, color } from "../index.js"
-import { MoonlinkPlayer, MoonlinkQueue, MoonlinkTrack } from "moonlink.js"
-import { Terminal } from "../utils/terminal.js"
+import { Player, Queue as MQueue, Track } from "moonlink.js"
 
-function GeneratePages(
-  player: MoonlinkPlayer,
-  queue: MoonlinkQueue
-): PaginationItem[] {
-  const getQueue = queue.getQueue()
-  const currentTrack = player.current as MoonlinkTrack
+function GeneratePages(player: Player, queue: MQueue): PaginationItem[] {
+  const currentTrack = player.current as Track
   const nowPlaying = currentTrack
     ? `Current Track: ${currentTrack.title} by ${currentTrack.author}`
     : null
@@ -24,7 +19,7 @@ function GeneratePages(
       function generateDescription() {
         var description = ``
 
-        const slicedQueue = getQueue.slice(
+        const slicedQueue = queue.tracks.slice(
           0 + pageIndex * 20,
           20 + pageIndex * 20
         )
@@ -63,10 +58,10 @@ function GeneratePages(
               text: "Queue will expire after 60 seconds of inactivity",
               iconURL: process.env.LOGO_PATH,
             })
-            .setThumbnail(currentTrack ? currentTrack.artworkUrl : null)
+            .setThumbnail(currentTrack.artworkUrl ?? null)
             .setTimestamp(Date.now())
             .setTitle(nowPlaying)
-            .setURL(currentTrack ? currentTrack.url : null),
+            .setURL(currentTrack.url ?? null),
         ],
       },
     ]
@@ -85,10 +80,10 @@ function GeneratePages(
             text: "Queue will expire after 60 seconds of inactivity",
             iconURL: process.env.LOGO_PATH,
           })
-          .setThumbnail(currentTrack ? currentTrack.artworkUrl : null)
+          .setThumbnail(currentTrack.artworkUrl ?? null)
           .setTimestamp(Date.now())
           .setTitle(nowPlaying)
-          .setURL(currentTrack ? currentTrack.url : null),
+          .setURL(currentTrack.url ?? null),
       ],
     }
   })
@@ -101,53 +96,41 @@ export class Queue {
     name: "queue",
   })
   async queue(interaction: CommandInteraction): Promise<void> {
-    try {
-      if (!bot.moon.isConnected) {
-        await interaction.reply({
-          content: "Not connected to Lavalink server",
-          ephemeral: true,
-        })
+    await interaction.deferReply()
 
-        return
-      }
+    var player = bot.moon.players.get(interaction.guildId!)
 
-      var player = bot.moon.players.get(interaction.guildId!)
+    if (!player) {
+      await interaction.editReply({
+        content: "Not connected to a voice channel",
+      })
 
-      if (!player) {
-        await interaction.reply({
-          content: "Not connected to a voice channel",
-          ephemeral: true,
-        })
-
-        return
-      }
-
-      new Pagination(interaction, GeneratePages(player, player.queue), {
-        type: PaginationType.Button,
-        time: 60 * 1000,
-        async onTimeout(page, message) {
-          await message.edit({
-            embeds: [
-              new EmbedBuilder()
-                .setAuthor({
-                  name: "Queue has expired",
-                  iconURL: process.env.QUEUE_PATH,
-                })
-                .setColor(color)
-                .setDescription(
-                  "Use **/queue** again to get the queue :sleeping:"
-                )
-                .setFooter({
-                  text: `@${interaction.member?.user.username} used /${interaction.command!.name}`,
-                  iconURL: process.env.LOGO_PATH,
-                })
-                .setTimestamp(Date.now()),
-            ],
-          })
-        },
-      }).send()
-    } catch (e) {
-      Terminal.error(e)
+      return
     }
+
+    new Pagination(interaction, GeneratePages(player, player.queue), {
+      type: PaginationType.Button,
+      time: 60 * 1000,
+      async onTimeout(page, message) {
+        await message.edit({
+          embeds: [
+            new EmbedBuilder()
+              .setAuthor({
+                name: "Queue has expired",
+                iconURL: process.env.QUEUE_PATH,
+              })
+              .setColor(color)
+              .setDescription(
+                "Use **/queue** again to get the queue :sleeping:"
+              )
+              .setFooter({
+                text: `@${interaction.member?.user.username} used /${interaction.command!.name}`,
+                iconURL: process.env.LOGO_PATH,
+              })
+              .setTimestamp(Date.now()),
+          ],
+        })
+      },
+    }).send()
   }
 }

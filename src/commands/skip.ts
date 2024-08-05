@@ -5,8 +5,7 @@ import {
 } from "discord.js"
 import { Discord, Slash, SlashOption } from "discordx"
 import { bot, color } from "../index.js"
-import { MoonlinkTrack } from "moonlink.js"
-import { Terminal } from "../utils/terminal.js"
+import { Track } from "moonlink.js"
 
 @Discord()
 export class Skip {
@@ -23,78 +22,63 @@ export class Skip {
     amount: number,
     interaction: CommandInteraction
   ): Promise<void> {
-    try {
-      if (!bot.moon) {
-        await interaction.reply({
-          content: "Not connected to Lavalink server",
-          ephemeral: true,
-        })
+    await interaction.deferReply()
 
-        return
-      }
+    const player = bot.moon.players.get(interaction.guildId!)
 
-      const player = bot.moon.players.get(interaction.guildId!)
-
-      if (!player) {
-        await interaction.reply({
-          content: "Not connected to a voice channel",
-          ephemeral: true,
-        })
-
-        return
-      }
-
-      const queue = player.queue.getQueue()
-
-      if (queue.length == 0 && player.autoPlay) {
-        await player.seek(player.current.duration - 1)
-        await interaction.reply("Skipped 1 track")
-        return
-      }
-
-      if (!amount) amount = 1
-
-      if (amount > queue.length) {
-        await interaction.reply({
-          content: "Amount is higher than queue size",
-          ephemeral: true,
-        })
-
-        return
-      }
-
-      var skippedTracks = queue.splice(0, amount)
-      var newCurrent = skippedTracks[skippedTracks.length - 1]
-      player.manager.emit(
-        "playerSkipped",
-        player,
-        <MoonlinkTrack>player.current,
-        newCurrent
-      )
-      player.current = newCurrent
-      player.queue.setQueue(queue)
-      await player.play(newCurrent)
-
-      await interaction.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setAuthor({
-              name: "Skipped track(s)",
-              iconURL: process.env.QUEUE_PATH,
-            })
-            .setColor(color)
-            .setDescription(
-              `Successfully skipped ${amount} ${amount > 1 ? "tracks" : "track"} :notes:`
-            )
-            .setFooter({
-              text: `@${interaction.user.username} used /${interaction.command!.name}`,
-              iconURL: process.env.LOGO_PATH,
-            })
-            .setTimestamp(Date.now()),
-        ],
+    if (!player) {
+      await interaction.editReply({
+        content: "Not connected to a voice channel",
       })
-    } catch (e) {
-      Terminal.error(e)
+
+      return
     }
+
+    if (player.queue.size == 0 && player.autoPlay) {
+      await player.seek(player.current.duration - 1)
+      await interaction.editReply("Skipped 1 track")
+      return
+    }
+
+    if (!amount) amount = 1
+
+    if (amount > player.queue.size) {
+      await interaction.editReply({
+        content: "Amount is higher than queue size",
+      })
+
+      return
+    }
+
+    var skippedTracks = player.queue.tracks.splice(0, amount)
+    var newCurrent = skippedTracks[skippedTracks.length - 1]
+    player.manager.emit(
+      "playerTriggeredSkip",
+      player,
+      <Track>player.current,
+      newCurrent,
+      0
+    )
+    player.current = newCurrent
+    await player.play()
+
+    await interaction.editReply({
+      embeds: [
+        new EmbedBuilder()
+          .setAuthor({
+            name: "Skipped track(s)",
+            iconURL: process.env.QUEUE_PATH,
+          })
+          .setColor(color)
+          .setDescription(
+            `Successfully skipped ${amount} ${amount > 1 ? "tracks" : "track"} :notes:`
+          )
+          .setFooter({
+            text: `@${interaction.user.username} used /${interaction.command!.name}`,
+            iconURL: process.env.LOGO_PATH,
+          })
+          .setTimestamp(Date.now()),
+      ],
+    })
   }
 }

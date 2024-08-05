@@ -1,11 +1,12 @@
 import dotenv from "dotenv"
 import { importx, dirname } from "@discordx/importer"
 import { initEvents } from "./utils/events.js"
-import { DiscordClient, MoonlinkClient } from "./utils/clients.js"
+import { DiscordClient } from "./utils/clients.js"
 import { HexColorString } from "discord.js"
 import { Client as Genius } from "genius-lyrics"
 import { CronJob } from "cron"
 import { Presence } from "./utils/presence.js"
+import { Manager } from "moonlink.js"
 
 dotenv.config()
 
@@ -14,8 +15,8 @@ export const bot = new DiscordClient(
     intents: 131071,
     silent: true,
   },
-  new MoonlinkClient(
-    [
+  new Manager({
+    nodes: [
       {
         host: process.env.LAVA_HOST ? process.env.LAVA_HOST : `127.0.0.1`,
         port: process.env.LAVA_PORT ? Number(process.env.LAVA_PORT) : 2333,
@@ -25,12 +26,12 @@ export const bot = new DiscordClient(
           : `youshallnotpass`,
       },
     ],
-    {},
-    (guildId: any, packet: any) => {
+    options: {},
+    sendPayload: (guildId: any, packet: any) => {
       let guild = bot.guilds.cache.get(guildId)
       if (guild) guild.shard.send(JSON.parse(packet))
-    }
-  )
+    },
+  })
 )
 
 export const color: HexColorString = `#${process.env.EMBED_COLOR}`
