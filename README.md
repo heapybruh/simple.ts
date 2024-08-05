@@ -1,18 +1,15 @@
 <div align="center">
  <h1>simple.ts</h1>
- <p>Simple and Easy-to-use Discord Bot written in TypeScript for music playback with multiple platform support.</p>
+ <p>Simple and Easy-to-use Discord Bot written in TypeScript for Music Playback.</p>
 </div>
 
 ![YouTube is Supported](https://img.shields.io/badge/YouTube-Supported-Green?logo=youtube)
 ![SoundCloud is Supported](https://img.shields.io/badge/SoundCloud-Supported-Green?logo=soundcloud)
 ![Spotify is Supported](https://img.shields.io/badge/Spotify-Supported-Green?logo=spotify)
 
-## Tested with Lavalink
-
-- Version: `4.0.6 HEAD 8a8ff75`
-- Plugins:
-  - [LavaSrc](https://github.com/topi314/LavaSrc) `4.1.1`
-  - [youtube-source](https://github.com/lavalink-devs/youtube-source) `1.3.0`
+## Tested with NodeLink
+*LavaLink has problems with YouTube, so I switched to NodeLink 🥱*
+- Version: `2.2.0 commit 86f3189`
 
 ## Packages
 
