@@ -20,7 +20,7 @@
 - [discord.js](https://www.npmjs.com/package/discord.js)
 - [discordx](https://www.npmjs.com/package/discordx)
 - [genius-lyrics](https://www.npmjs.com/package/genius-lyrics)
-- [moonlink.js (fork)](https://github.com/heapybruh/moonlink.js)
+- [moonlink.js](https://github.com/Ecliptia/moonlink.js)
 
 ## Installation & Usage
 
