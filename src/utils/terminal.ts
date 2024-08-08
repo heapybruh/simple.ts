@@ -17,7 +17,7 @@ export class Terminal {
       })
 
     console.log(
-      `${prefix} ${chalk.green.bold("DEBUG >>")} ${chalk.bgGreen(` ${title} `)} ${description}`
+      `${prefix} ${chalk.blue.bold("DEBUG >>")} ${chalk.bgBlue(`\u0020${title}\u0020`)} ${description}`
     )
   }
 

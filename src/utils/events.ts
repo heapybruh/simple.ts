@@ -1,6 +1,6 @@
 import { EmbedBuilder, Interaction, TextChannel, User } from "discord.js"
 import { bot, color } from "../index.js"
-import { Player, Track } from "moonlink.js"
+import { Player, Track, TTrackEndType } from "moonlink.js"
 import { secondsToDuration } from "./duration.js"
 import { Presence } from "./presence.js"
 import { Terminal } from "./terminal.js"
@@ -123,37 +123,47 @@ export function initEvents(): void {
       ])
   })
 
-  bot.moon.on("trackEnd", async (player: Player, track: Track) => {
-    if (process.env.DEBUG_trackEnd)
-      Terminal.debug("trackEnd", [
-        `guild: ${player.guildId}`,
-        track.requestedBy
-          ? `requester: @${(<User>track.requestedBy).username} (${(<User>track.requestedBy).id})`
-          : undefined,
-        `track: ${track.title}`,
-        `author: ${track.author}`,
-        `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
-      ])
+  bot.moon.on(
+    "trackEnd",
+    async (
+      player: Player,
+      track: Track,
+      type: TTrackEndType,
+      payload?: any
+    ) => {
+      if (process.env.DEBUG_trackEnd)
+        Terminal.debug("trackEnd", [
+          `guild: ${player.guildId}`,
+          track.requestedBy
+            ? `requester: @${(<User>track.requestedBy).username} (${(<User>track.requestedBy).id})`
+            : undefined,
+          `track: ${track.title}`,
+          `type: ${type}`,
+          `payload: ${JSON.stringify(payload)}`,
+          `author: ${track.author}`,
+          `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
+        ])
 
-    if (!track.url) return
+      if (!track.url) return
 
-    if (
-      player.queue.size == 0 && // Queue is empty, last track (in queue) just ended
-      player.autoPlay && // Autoplay is enabled
-      !track.url.includes("youtube.com") // all YouTube URL types get converted to "www.youtube.com"
-    ) {
-      const channel = bot.channels.cache.get(
-        player.textChannelId
-      ) as TextChannel
+      if (
+        player.queue.size == 0 && // Queue is empty, last track (in queue) just ended
+        player.autoPlay && // Autoplay is enabled
+        !track.url.includes("youtube.com") // all YouTube URL types get converted to "www.youtube.com"
+      ) {
+        const channel = bot.channels.cache.get(
+          player.textChannelId
+        ) as TextChannel
 
-      if (channel)
-        channel.send(
-          ":red_circle: Autoplay was enabled and last track wasn't a YouTube track. Autoplay currently works only with YouTube tracks, disconnecting..."
-        )
+        if (channel)
+          channel.send(
+            ":red_circle: Autoplay was enabled and last track wasn't a YouTube track. Autoplay currently works only with YouTube tracks, disconnecting..."
+          )
 
-      await player.destroy()
+        await player.destroy()
+      }
     }
-  })
+  )
 
   bot.moon.on(
     "trackException",
