@@ -26,6 +26,15 @@ export class Play {
     query: string,
     interaction: CommandInteraction
   ): Promise<void> {
+    if (bot.moon.nodes.cache.get("socket")) {
+      await interaction.reply({
+        content: "Not connected to NodeLink",
+        ephemeral: true,
+      })
+
+      return
+    }
+
     await interaction.deferReply()
 
     var member = interaction.guild?.members.cache.get(

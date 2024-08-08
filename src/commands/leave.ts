@@ -9,6 +9,15 @@ export class Leave {
     name: "leave",
   })
   async leave(interaction: CommandInteraction): Promise<void> {
+    if (bot.moon.nodes.cache.get("socket")) {
+      await interaction.reply({
+        content: "Not connected to NodeLink",
+        ephemeral: true,
+      })
+
+      return
+    }
+
     await interaction.deferReply()
 
     var player = bot.moon.players.get(interaction.guildId!)

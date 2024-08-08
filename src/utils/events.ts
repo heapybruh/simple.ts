@@ -21,7 +21,6 @@ export function initEvents(): void {
       ])
 
     await bot.moon.init(bot.user!.id!)
-    console.log(bot.moon.nodes.cache)
   })
 
   bot.on("raw", (data: any) => bot.moon.packetUpdate(data))

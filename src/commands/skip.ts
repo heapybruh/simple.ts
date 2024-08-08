@@ -22,6 +22,15 @@ export class Skip {
     amount: number,
     interaction: CommandInteraction
   ): Promise<void> {
+    if (bot.moon.nodes.cache.get("socket")) {
+      await interaction.reply({
+        content: "Not connected to NodeLink",
+        ephemeral: true,
+      })
+
+      return
+    }
+
     await interaction.deferReply()
 
     const player = bot.moon.players.get(interaction.guildId!)

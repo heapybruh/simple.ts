@@ -7,6 +7,15 @@ import { Terminal } from "../utils/terminal.js"
 export class Shuffle {
   @Slash({ description: "Shuffles queue", name: "shuffle" })
   async shuffle(interaction: CommandInteraction): Promise<void> {
+    if (bot.moon.nodes.cache.get("socket")) {
+      await interaction.reply({
+        content: "Not connected to NodeLink",
+        ephemeral: true,
+      })
+
+      return
+    }
+
     await interaction.deferReply()
 
     var member = interaction.guild?.members.cache.get(
