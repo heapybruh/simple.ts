@@ -168,7 +168,7 @@ export function initEvents(): void {
 
       if (process.env.DEBUG_trackError)
         Terminal.debug("trackException", [
-          `exception: ${exception}`,
+          `exception: ${JSON.stringify(exception)}`,
           `guild: ${player.guildId}`,
           track.requestedBy
             ? `requester: @${(<User>track.requestedBy).username} (${(<User>track.requestedBy).id})`
