@@ -104,9 +104,7 @@ export class Play {
               text: `@${member.user.username} used /${interaction.command!.name}`,
               iconURL: process.env.LOGO_PATH,
             })
-            .setTimestamp(Date.now())
-            .setTitle(results.playlistInfo!.name)
-            .setURL(query),
+            .setTimestamp(Date.now()),
         ],
       })
 
