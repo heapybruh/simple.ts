@@ -59,17 +59,7 @@ export class Skip {
       return
     }
 
-    var skippedTracks = player.queue.tracks.splice(0, amount)
-    var newCurrent = skippedTracks[skippedTracks.length - 1]
-    player.manager.emit(
-      "playerTriggeredSkip",
-      player,
-      <Track>player.current,
-      newCurrent,
-      0
-    )
-    player.current = newCurrent
-    await player.play()
+    await player.skip(amount - 1)
 
     await interaction.editReply({
       embeds: [
