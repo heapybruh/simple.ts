@@ -8,8 +8,8 @@
 ![Spotify is Supported](https://img.shields.io/badge/Spotify-Supported-Green?logo=spotify)
 
 ## Tested with NodeLink
-*LavaLink has problems with YouTube, so I switched to NodeLink 🥱*  
-*YouTube started blocking Discord bots completely, whether they're using NodeLink or LavaLink. 🥲*
+*YouTube started blocking Discord bots completely, whether they're using NodeLink or LavaLink. 🥲*  
+*Unfortunately simple.ts has been offline for months because of that.*
 - Version: [`2.2.0 commit 86f3189`](https://github.com/PerformanC/NodeLink/commit/86f3189627dd63a66bae382d5453ae6c5f7730a1)
 
 ## Packages
