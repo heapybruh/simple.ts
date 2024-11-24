@@ -5,7 +5,7 @@
 
 ![YouTube is Supported](https://img.shields.io/badge/YouTube-Supported-Green?logo=youtube)
 ![SoundCloud is Supported](https://img.shields.io/badge/SoundCloud-Supported-Green?logo=soundcloud)
-![Spotify is Supported](https://img.shields.io/badge/Spotify-Supported-Green?logo=spotify)
+![Spotify is WIP](https://img.shields.io/badge/Spotify-Work%20In%20Progress-yellow?logo=spotify)
 
 ## Tested with NodeLink
 *YouTube started blocking Discord bots completely, whether they're using NodeLink or LavaLink. 🥲*  
@@ -34,10 +34,8 @@ $ git clone https://github.com/heapybruh/simple.ts
 2. Go to [Discord Developer Portal](https://discord.com/developers/applications/) and create a Bot there.
 3. Rename `.env.example` to `.env`.
 4. Copy your Bot's token and paste it into `.env`.
-5. Run commands below to install packages, compile and then start the Bot.
+5. Start the Bot with:
 
 ```
-$ npm install
-$ npm start build
-$ npm start run
+$ deno task start
 ```
