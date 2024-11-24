@@ -1,12 +1,12 @@
-import dotenv from "npm:dotenv"
-import { importx, dirname } from "npm:@discordx/importer"
+import dotenv from "dotenv"
+import { importx, dirname } from "@discordx/importer"
 import { initEvents } from "./utils/events.ts"
 import { DiscordClient } from "./utils/clients.ts"
-import { HexColorString } from "npm:discord.js"
-import { Client as Genius } from "npm:genius-lyrics"
-import { CronJob } from "npm:cron"
+import { HexColorString } from "discord.js"
+import { Client as Genius } from "genius-lyrics"
+import { CronJob } from "cron"
 import { Presence } from "./utils/presence.ts"
-import { Manager } from "npm:moonlink.js"
+import { Manager } from "moonlink.js"
 import process from "node:process"
 
 dotenv.config()

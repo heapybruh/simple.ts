@@ -1,5 +1,5 @@
-import { CommandInteraction } from "npm:discord.js"
-import { Discord, Slash } from "npm:discordx"
+import { CommandInteraction } from "discord.js"
+import { Discord, Slash } from "discordx"
 import { bot } from "../index.ts"
 
 @Discord()

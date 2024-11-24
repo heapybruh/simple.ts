@@ -6,15 +6,15 @@ import {
   MessageActionRowComponentBuilder,
   StringSelectMenuBuilder,
   StringSelectMenuInteraction,
-} from "npm:discord.js"
-import { Discord, SelectMenuComponent, Slash, SlashOption } from "npm:discordx"
+} from "discord.js"
+import { Discord, SelectMenuComponent, Slash, SlashOption } from "discordx"
 import { bot, color, genius } from "../index.ts"
-import { Song } from "npm:genius-lyrics"
+import { Song } from "genius-lyrics"
 import {
   Pagination,
   PaginationItem,
   PaginationType,
-} from "npm:@discordx/pagination"
+} from "@discordx/pagination"
 import { Terminal } from "../utils/terminal.ts"
 import process from "node:process"
 
@@ -28,13 +28,13 @@ function GeneratePages(song: Song, lyrics: string[]): PaginationItem[] {
         new EmbedBuilder()
           .setAuthor({
             name: `Page ${index + 1}/${lyrics.length}`,
-            iconURL: process.env.LYRICS_PATH,
+            iconURL: process.env.LYRICS_ICON,
           })
           .setColor(color)
           .setDescription(page)
           .setFooter({
             text: "Lyrics will expire after 120 seconds of inactivity",
-            iconURL: process.env.LOGO_PATH,
+            iconURL: process.env.LOGO,
           })
           .setThumbnail(song.image)
           .setTimestamp(Date.now())
@@ -92,19 +92,19 @@ export class Lyrics {
     new Pagination(interaction, GeneratePages(song, lyricsPages), {
       type: PaginationType.Button,
       time: 120 * 1000,
-      async onTimeout(page, message) {
+      async onTimeout(_page, message) {
         await message.edit({
           embeds: [
             new EmbedBuilder()
               .setAuthor({
                 name: "Lyrics have expired",
-                iconURL: process.env.LYRICS_PATH,
+                iconURL: process.env.LYRICS_ICON,
               })
               .setColor(color)
               .setDescription("Use **/lyrics** again to get lyrics :sleeping:")
               .setFooter({
                 text: `@${interaction.member?.user.username} used /lyrics`,
-                iconURL: process.env.LOGO_PATH,
+                iconURL: process.env.LOGO,
               })
               .setTimestamp(Date.now()),
           ],
@@ -201,13 +201,13 @@ export class Lyrics {
         new EmbedBuilder()
           .setAuthor({
             name: "Select a track",
-            iconURL: process.env.LYRICS_PATH,
+            iconURL: process.env.LYRICS_ICON,
           })
           .setColor(color)
           .setDescription("Choose track from the list to get lyrics :blush:")
           .setFooter({
             text: `@${interaction.member?.user.username} used /lyrics`,
-            iconURL: process.env.LOGO_PATH,
+            iconURL: process.env.LOGO,
           })
           .setTimestamp(Date.now()),
       ],

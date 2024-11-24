@@ -2,8 +2,8 @@ import {
   ApplicationCommandOptionType,
   CommandInteraction,
   EmbedBuilder,
-} from "npm:discord.js"
-import { Discord, Slash, SlashChoice, SlashOption } from "npm:discordx"
+} from "discord.js"
+import { Discord, Slash, SlashChoice, SlashOption } from "discordx"
 import { bot, color } from "../index.ts"
 import process from "node:process"
 
@@ -75,13 +75,13 @@ export class Loop {
         new EmbedBuilder()
           .setAuthor({
             name: "Changed loop mode",
-            iconURL: process.env.LOOP_PATH,
+            iconURL: process.env.LOOP_ICON,
           })
           .setColor(color)
           .setDescription(`Successfully changed loop mode to: **${modeName}**`)
           .setFooter({
             text: process.env.FOOTER_CONTENT!,
-            iconURL: process.env.LOGO_PATH,
+            iconURL: process.env.LOGO,
           })
           .setTimestamp(Date.now()),
       ],

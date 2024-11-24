@@ -1,4 +1,4 @@
-import chalk from "npm:chalk"
+import chalk from "chalk"
 
 const prefix = `[ ${chalk.blue.bold("simple.ts")} ]`
 

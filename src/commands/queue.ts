@@ -1,12 +1,12 @@
-import { CommandInteraction, EmbedBuilder } from "npm:discord.js"
-import { Discord, Slash } from "npm:discordx"
+import { CommandInteraction, EmbedBuilder } from "discord.js"
+import { Discord, Slash } from "discordx"
 import {
   Pagination,
   PaginationItem,
   PaginationType,
-} from "npm:@discordx/pagination"
+} from "@discordx/pagination"
 import { bot, color } from "../index.ts"
-import { Player, Queue as MQueue, Track } from "npm:moonlink.js"
+import { Player, Queue as MQueue, Track } from "moonlink.js"
 import process from "node:process"
 
 function GeneratePages(player: Player, queue: MQueue): PaginationItem[] {
@@ -51,7 +51,7 @@ function GeneratePages(player: Player, queue: MQueue): PaginationItem[] {
           new EmbedBuilder()
             .setAuthor({
               name: "Page 1/1",
-              iconURL: process.env.QUEUE_PATH,
+              iconURL: process.env.QUEUE_ICON,
             })
             .setColor(color)
             .setDescription(
@@ -63,7 +63,7 @@ function GeneratePages(player: Player, queue: MQueue): PaginationItem[] {
             )
             .setFooter({
               text: "Queue will expire after 60 seconds of inactivity",
-              iconURL: process.env.LOGO_PATH,
+              iconURL: process.env.LOGO,
             })
             .setThumbnail(currentTrack.artworkUrl ?? null)
             .setTimestamp(Date.now())
@@ -79,13 +79,13 @@ function GeneratePages(player: Player, queue: MQueue): PaginationItem[] {
         new EmbedBuilder()
           .setAuthor({
             name: page.title,
-            iconURL: process.env.QUEUE_PATH,
+            iconURL: process.env.QUEUE_ICON,
           })
           .setColor(color)
           .setDescription(page.description)
           .setFooter({
             text: "Queue will expire after 60 seconds of inactivity",
-            iconURL: process.env.LOGO_PATH,
+            iconURL: process.env.LOGO,
           })
           .setThumbnail(currentTrack.artworkUrl ?? null)
           .setTimestamp(Date.now())
@@ -133,7 +133,7 @@ export class Queue {
             new EmbedBuilder()
               .setAuthor({
                 name: "Queue has expired",
-                iconURL: process.env.QUEUE_PATH,
+                iconURL: process.env.QUEUE_ICON,
               })
               .setColor(color)
               .setDescription(
@@ -143,7 +143,7 @@ export class Queue {
                 text: `@${interaction.member?.user.username} used /${
                   interaction.command!.name
                 }`,
-                iconURL: process.env.LOGO_PATH,
+                iconURL: process.env.LOGO,
               })
               .setTimestamp(Date.now()),
           ],

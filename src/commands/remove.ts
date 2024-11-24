@@ -2,8 +2,8 @@ import {
   ApplicationCommandOptionType,
   CommandInteraction,
   EmbedBuilder,
-} from "npm:discord.js"
-import { Discord, Slash, SlashOption } from "npm:discordx"
+} from "discord.js"
+import { Discord, Slash, SlashOption } from "discordx"
 import { bot, color } from "../index.ts"
 import process from "node:process"
 
@@ -67,7 +67,7 @@ export class Remove {
         new EmbedBuilder()
           .setAuthor({
             name: "Removed track",
-            iconURL: process.env.QUEUE_PATH,
+            iconURL: process.env.QUEUE_ICON,
           })
           .setColor(color)
           .setDescription(
@@ -77,7 +77,7 @@ export class Remove {
             text: `@${interaction.user.username} used /${
               interaction.command!.name
             }`,
-            iconURL: process.env.LOGO_PATH,
+            iconURL: process.env.LOGO,
           })
           .setTimestamp(Date.now()),
       ],

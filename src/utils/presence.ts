@@ -1,4 +1,4 @@
-import { ActivityType } from "npm:discord.js"
+import { ActivityType } from "discord.js"
 import { bot } from "../index.ts"
 
 export class Presence {

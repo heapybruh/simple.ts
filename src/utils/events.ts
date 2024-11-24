@@ -1,6 +1,6 @@
-import { EmbedBuilder, Interaction, TextChannel, User } from "npm:discord.js"
+import { EmbedBuilder, Interaction, TextChannel, User } from "discord.js"
 import { bot, color } from "../index.ts"
-import { Player, Track, TTrackEndType } from "npm:moonlink.js"
+import { Player, Track, TTrackEndType } from "moonlink.js"
 import { secondsToDuration } from "./duration.ts"
 import { Presence } from "./presence.ts"
 import { Terminal } from "./terminal.ts"
@@ -68,12 +68,12 @@ export function initEvents(): void {
             )
             .setAuthor({
               name: "Now Playing",
-              iconURL: process.env.PLAY_PATH,
+              iconURL: process.env.PLAY_ICON,
             })
             .setColor(color)
             .setFooter({
               text: "simple.ts maintained by heapy",
-              iconURL: process.env.LOGO_PATH,
+              iconURL: process.env.LOGO,
             })
             .setThumbnail(track.artworkUrl ?? null)
             .setTitle(track.title)

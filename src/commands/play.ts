@@ -3,8 +3,8 @@ import {
   EmbedBuilder,
   User,
   type CommandInteraction,
-} from "npm:discord.js"
-import { Discord, Slash, SlashOption } from "npm:discordx"
+} from "discord.js"
+import { Discord, Slash, SlashOption } from "discordx"
 import { bot, color } from "../index.ts"
 import { secondsToDuration } from "../utils/duration.ts"
 import process from "node:process"
@@ -96,14 +96,14 @@ export class Play {
             })
             .setAuthor({
               name: "Added playlist to queue",
-              iconURL: process.env.QUEUE_PATH,
+              iconURL: process.env.QUEUE_ICON,
             })
             .setColor(color)
             .setFooter({
               text: `@${member.user.username} used /${
                 interaction.command!.name
               }`,
-              iconURL: process.env.LOGO_PATH,
+              iconURL: process.env.LOGO,
             })
             .setTimestamp(Date.now()),
         ],
@@ -140,14 +140,14 @@ export class Play {
             )
             .setAuthor({
               name: "Added track to queue",
-              iconURL: process.env.QUEUE_PATH,
+              iconURL: process.env.QUEUE_ICON,
             })
             .setColor(color)
             .setFooter({
               text: `@${member.user.username} used /${
                 interaction.command!.name
               }`,
-              iconURL: process.env.LOGO_PATH,
+              iconURL: process.env.LOGO,
             })
             .setImage(results.tracks[0].artworkUrl ?? null)
             .setTimestamp(Date.now())

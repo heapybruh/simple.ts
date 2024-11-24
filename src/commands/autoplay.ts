@@ -1,9 +1,9 @@
 import {
-  ApplicationCommandOptionType,
   CommandInteraction,
   EmbedBuilder,
-} from "npm:discord.js"
-import { Discord, Slash, SlashChoice, SlashOption } from "npm:discordx"
+  ApplicationCommandOptionType,
+} from "discord.js"
+import { Discord, Slash, SlashChoice, SlashOption } from "discordx"
 import { bot, color } from "../index.ts"
 import process from "node:process"
 
