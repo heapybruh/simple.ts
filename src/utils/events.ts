@@ -1,9 +1,10 @@
-import { EmbedBuilder, Interaction, TextChannel, User } from "discord.js"
-import { bot, color } from "../index.js"
-import { Player, Track, TTrackEndType } from "moonlink.js"
-import { secondsToDuration } from "./duration.js"
-import { Presence } from "./presence.js"
-import { Terminal } from "./terminal.js"
+import { EmbedBuilder, Interaction, TextChannel, User } from "npm:discord.js"
+import { bot, color } from "../index.ts"
+import { Player, Track, TTrackEndType } from "npm:moonlink.js"
+import { secondsToDuration } from "./duration.ts"
+import { Presence } from "./presence.ts"
+import { Terminal } from "./terminal.ts"
+import process from "node:process"
 
 export function initEvents(): void {
   bot.on("ready", async () => {
@@ -15,11 +16,6 @@ export function initEvents(): void {
       `Invite your bot by using URL below\n>> https://discord.com/api/oauth2/authorize?client_id=${process.env.BOT_APPLICATION_ID}&permissions=3262464&scope=applications.commands%20bot`
     )
 
-    if (process.env.DEBUG_READY)
-      Terminal.debug("ready", [
-        `user: @${bot.user!.username} (${bot.user!.id})`,
-      ])
-
     await bot.moon.init(bot.user!.id!)
   })
 
@@ -27,15 +23,6 @@ export function initEvents(): void {
 
   bot.on("interactionCreate", (interaction: Interaction) => {
     bot.executeInteraction(interaction)
-
-    if (process.env.DEBUG_interactionCreate)
-      Terminal.debug("interaction", [
-        `guild: ${interaction.guildId}`,
-        `user: @${interaction.user.username} (${interaction.user.id})`,
-        interaction.isCommand()
-          ? `cmd: /${interaction.commandName}`
-          : undefined,
-      ])
   })
 
   bot.on("voiceStateUpdate", async (oldState, newState) => {
@@ -48,31 +35,16 @@ export function initEvents(): void {
       player.voiceChannelId == oldState.channelId
     )
       if (oldState.channel?.members.size == 1) await player.destroy()
-
-    if (process.env.DEBUG_voiceStateUpdate)
-      Terminal.debug("voiceStateUpdate", [
-        `user: @${newState.member?.user.username} (${newState.member?.user.id})`,
-        `oldState: ${oldState.channelId}`,
-        `newState: ${newState.channelId}`,
-      ])
   })
 
   bot.moon.on("nodeCreate", (node) => {
     Terminal.print("Connected to Lavalink")
-
-    if (process.env.DEBUG_nodeCreate)
-      Terminal.debug("nodeCreate", [`host: ${node.host}:${node.port}`])
-  })
-
-  bot.moon.on("nodeError", (node, error: Error) => {
-    if (process.env.DEBUG_nodeError)
-      Terminal.debug("nodeError", [`error: ${error.message}`])
   })
 
   bot.moon.on("trackStart", async (player: Player, track: Track) => {
     const channel = bot.channels.cache.get(player.textChannelId) as TextChannel
     if (channel)
-      channel.send({
+      await channel.send({
         embeds: [
           new EmbedBuilder()
             .addFields(
@@ -100,7 +72,7 @@ export function initEvents(): void {
             })
             .setColor(color)
             .setFooter({
-              text: `${bot.user?.username} by @heapy (@heapybruh on GitHub)`,
+              text: "simple.ts maintained by heapy",
               iconURL: process.env.LOGO_PATH,
             })
             .setThumbnail(track.artworkUrl ?? null)
@@ -109,17 +81,6 @@ export function initEvents(): void {
             .setURL(track.url ?? null),
         ],
       })
-
-    if (process.env.DEBUG_trackStart)
-      Terminal.debug("trackStart", [
-        `guild: ${player.guildId}`,
-        track.requestedBy
-          ? `requester: @${(<User>track.requestedBy).username} (${(<User>track.requestedBy).id})`
-          : undefined,
-        `track: ${track.title}`,
-        `author: ${track.author}`,
-        `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
-      ])
   })
 
   bot.moon.on(
@@ -130,19 +91,6 @@ export function initEvents(): void {
       type: TTrackEndType,
       payload?: any
     ) => {
-      if (process.env.DEBUG_trackEnd)
-        Terminal.debug("trackEnd", [
-          `guild: ${player.guildId}`,
-          track.requestedBy
-            ? `requester: @${(<User>track.requestedBy).username} (${(<User>track.requestedBy).id})`
-            : undefined,
-          `track: ${track.title}`,
-          `type: ${type}`,
-          `payload: ${JSON.stringify(payload)}`,
-          `author: ${track.author}`,
-          `duration: ${secondsToDuration(Math.floor(track.duration / 1000))}`,
-        ])
-
       if (!track.url) return
 
       if (
@@ -175,17 +123,6 @@ export function initEvents(): void {
           `Error has occurred while playing \`${track.title}\` by \`${track.author}\`, skipping...`
         )
 
-      if (process.env.DEBUG_trackError)
-        Terminal.debug("trackException", [
-          `exception: ${JSON.stringify(exception)}`,
-          `guild: ${player.guildId}`,
-          track.requestedBy
-            ? `requester: @${(<User>track.requestedBy).username} (${(<User>track.requestedBy).id})`
-            : undefined,
-          `track: ${track.title}`,
-          `author: ${track.author}`,
-        ])
-
       if (player.queue.size == 0 && player.autoPlay)
         await player.seek(player.current.duration - 1)
       else await player.skip()
@@ -194,8 +131,5 @@ export function initEvents(): void {
 
   bot.moon.on("playerDisconnected", async (player: Player) => {
     await player.destroy()
-
-    if (process.env.DEBUG_playerDisconnect)
-      Terminal.debug("playerDisconnected", [`guild: ${player.guildId}`])
   })
 }

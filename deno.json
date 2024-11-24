@@ -1,0 +1,12 @@
+{
+  "tasks": {
+    "dev": "deno run --watch --allow-env --allow-read --allow-sys --allow-net src/index.ts",
+    "start": "deno run --allow-env --allow-read --allow-sys --allow-net src/index.ts"
+  },
+  "lock": false,
+  "compilerOptions": {
+    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
+}

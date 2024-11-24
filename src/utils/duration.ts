@@ -1,5 +1,5 @@
 export function secondsToDuration(seconds: number): string {
-  var duration = ""
+  let duration = ""
 
   const durationHours = Math.floor(seconds / 3600)
   if (durationHours)

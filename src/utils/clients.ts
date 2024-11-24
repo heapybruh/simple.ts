@@ -1,5 +1,5 @@
-import { Client, ClientOptions } from "discordx"
-import { Manager } from "moonlink.js"
+import { Client, ClientOptions } from "npm:discordx"
+import { Manager } from "npm:moonlink.js"
 
 export class DiscordClient extends Client {
   moon: Manager

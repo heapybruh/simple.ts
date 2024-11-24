@@ -1,12 +1,13 @@
-import { CommandInteraction, EmbedBuilder, HexColorString } from "discord.js"
-import { Discord, Slash } from "discordx"
+import { CommandInteraction, EmbedBuilder } from "npm:discord.js"
+import { Discord, Slash } from "npm:discordx"
 import {
   Pagination,
   PaginationItem,
   PaginationType,
-} from "@discordx/pagination"
-import { bot, color } from "../index.js"
-import { Player, Queue as MQueue, Track } from "moonlink.js"
+} from "npm:@discordx/pagination"
+import { bot, color } from "../index.ts"
+import { Player, Queue as MQueue, Track } from "npm:moonlink.js"
+import process from "node:process"
 
 function GeneratePages(player: Player, queue: MQueue): PaginationItem[] {
   const currentTrack = player.current as Track
@@ -17,7 +18,7 @@ function GeneratePages(player: Player, queue: MQueue): PaginationItem[] {
   const pages = Array.from(Array(Math.ceil(queue.size / 20)).keys()).map(
     (pageIndex) => {
       function generateDescription() {
-        var description = ``
+        let description = ``
 
         const slicedQueue = queue.tracks.slice(
           0 + pageIndex * 20,
@@ -28,7 +29,9 @@ function GeneratePages(player: Player, queue: MQueue): PaginationItem[] {
           (track, index) =>
             (description =
               description +
-              `\n${(pageIndex == 0 ? 0 : 1) + index + pageIndex * 20}. [${track.title} by **${track.author}**](${track.url})`)
+              `\n${(pageIndex == 0 ? 0 : 1) + index + pageIndex * 20}. [${
+                track.title
+              } by **${track.author}**](${track.url})`)
         )
 
         return description
@@ -52,7 +55,11 @@ function GeneratePages(player: Player, queue: MQueue): PaginationItem[] {
             })
             .setColor(color)
             .setDescription(
-              `${player.autoPlay ? "Autoplay is **enabled** :green_circle:" : "Autoplay is **disabled** :red_circle:"}\nLooks like queue is empty... :broom: :dash:`
+              `${
+                player.autoPlay
+                  ? "Autoplay is **enabled** :green_circle:"
+                  : "Autoplay is **disabled** :red_circle:"
+              }\nLooks like queue is empty... :broom: :dash:`
             )
             .setFooter({
               text: "Queue will expire after 60 seconds of inactivity",
@@ -133,7 +140,9 @@ export class Queue {
                 "Use **/queue** again to get the queue :sleeping:"
               )
               .setFooter({
-                text: `@${interaction.member?.user.username} used /${interaction.command!.name}`,
+                text: `@${interaction.member?.user.username} used /${
+                  interaction.command!.name
+                }`,
                 iconURL: process.env.LOGO_PATH,
               })
               .setTimestamp(Date.now()),

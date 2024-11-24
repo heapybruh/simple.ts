@@ -2,10 +2,10 @@ import {
   ApplicationCommandOptionType,
   CommandInteraction,
   EmbedBuilder,
-} from "discord.js"
-import { Discord, Slash, SlashChoice, SlashOption } from "discordx"
-import { bot, color } from "../index.js"
-import { Terminal } from "../utils/terminal.js"
+} from "npm:discord.js"
+import { Discord, Slash, SlashChoice, SlashOption } from "npm:discordx"
+import { bot, color } from "../index.ts"
+import process from "node:process"
 
 enum LoopMode {
   CURRENT_TRACK,
@@ -43,7 +43,7 @@ export class Loop {
 
     await interaction.deferReply()
 
-    var player = bot.moon.players.get(interaction.guildId!)
+    const player = bot.moon.players.get(interaction.guildId!)
 
     if (!player) {
       await interaction.editReply({
@@ -53,7 +53,7 @@ export class Loop {
       return
     }
 
-    var modeName
+    let modeName
 
     switch (mode) {
       case LoopMode.CURRENT_TRACK:
@@ -80,7 +80,7 @@ export class Loop {
           .setColor(color)
           .setDescription(`Successfully changed loop mode to: **${modeName}**`)
           .setFooter({
-            text: `@${interaction.user.username} used /${interaction.command!.name}`,
+            text: process.env.FOOTER_CONTENT!,
             iconURL: process.env.LOGO_PATH,
           })
           .setTimestamp(Date.now()),

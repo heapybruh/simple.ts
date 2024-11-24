@@ -1,7 +1,7 @@
-import { CommandInteraction, EmbedBuilder } from "discord.js"
-import { Discord, Slash } from "discordx"
-import { bot, color } from "../index.js"
-import { Terminal } from "../utils/terminal.js"
+import { CommandInteraction, EmbedBuilder } from "npm:discord.js"
+import { Discord, Slash } from "npm:discordx"
+import { bot, color } from "../index.ts"
+import process from "node:process"
 
 @Discord()
 export class Shuffle {
@@ -18,7 +18,7 @@ export class Shuffle {
 
     await interaction.deferReply()
 
-    var member = interaction.guild?.members.cache.get(
+    const member = interaction.guild?.members.cache.get(
       interaction.member?.user.id!
     )
 
@@ -30,7 +30,7 @@ export class Shuffle {
       return
     }
 
-    var player = bot.moon.players.get(interaction.guildId!)
+    const player = bot.moon.players.get(interaction.guildId!)
 
     if (!player) {
       await interaction.editReply({
@@ -62,7 +62,9 @@ export class Shuffle {
             "Successfully shuffled queue :twisted_rightwards_arrows:"
           )
           .setFooter({
-            text: `@${interaction.user.username} used /${interaction.command!.name}`,
+            text: `@${interaction.user.username} used /${
+              interaction.command!.name
+            }`,
             iconURL: process.env.LOGO_PATH,
           })
           .setTimestamp(Date.now()),

@@ -6,16 +6,17 @@ import {
   MessageActionRowComponentBuilder,
   StringSelectMenuBuilder,
   StringSelectMenuInteraction,
-} from "discord.js"
-import { Discord, SelectMenuComponent, Slash, SlashOption } from "discordx"
-import { bot, color, genius } from "../index.js"
-import { Song } from "genius-lyrics"
+} from "npm:discord.js"
+import { Discord, SelectMenuComponent, Slash, SlashOption } from "npm:discordx"
+import { bot, color, genius } from "../index.ts"
+import { Song } from "npm:genius-lyrics"
 import {
   Pagination,
   PaginationItem,
   PaginationType,
-} from "@discordx/pagination"
-import { Terminal } from "../utils/terminal.js"
+} from "npm:@discordx/pagination"
+import { Terminal } from "../utils/terminal.ts"
+import process from "node:process"
 
 const annotation = new RegExp(String.raw`\[.+\]`)
 const titleJunk = new RegExp(String.raw`\(.+\)`, "g")
@@ -55,9 +56,12 @@ export class Lyrics {
     if (!value)
       return await interaction.editReply("invalid song id, select again")
 
+    let song
+    let lyrics
+
     try {
-      var song = await genius.songs.get(Number(value))
-      var lyrics = await song.lyrics()
+      song = await genius.songs.get(Number(value))
+      lyrics = await song.lyrics()
     } catch (error: any) {
       Terminal.error("Unable to get lyrics", [
         `guild: ${interaction.guildId}`,
@@ -70,7 +74,7 @@ export class Lyrics {
 
     const lyricsList = lyrics.split("\n")
     const lyricsPages: string[] = [""]
-    var index = 0
+    let index = 0
 
     lyricsList.map((line) => {
       if (lyricsPages[index].length < 1024)
@@ -134,7 +138,7 @@ export class Lyrics {
 
     await interaction.deferReply({ ephemeral: true })
 
-    var player = bot.moon.players.get(interaction.guildId!)
+    const player = bot.moon.players.get(interaction.guildId!)
 
     if (query == undefined) {
       if (!player) {
@@ -153,12 +157,14 @@ export class Lyrics {
         return
       }
 
-      let current = player.current
+      const current = player.current
       query = `${current.author} - ${current.title.replaceAll(titleJunk, "")}`
     }
 
+    let songs
+
     try {
-      var songs = await genius.songs.search(query)
+      songs = await genius.songs.search(query)
     } catch (error: any) {
       Terminal.error("Unable to get lyrics", [
         `guild: ${interaction.guildId}`,

@@ -1,6 +1,6 @@
-import { CommandInteraction } from "discord.js"
-import { Discord, Slash } from "discordx"
-import { bot } from "../index.js"
+import { CommandInteraction } from "npm:discord.js"
+import { Discord, Slash } from "npm:discordx"
+import { bot } from "../index.ts"
 
 @Discord()
 export class Join {
@@ -20,7 +20,7 @@ export class Join {
 
     await interaction.deferReply()
 
-    var member = interaction.guild?.members.cache.get(
+    const member = interaction.guild?.members.cache.get(
       interaction.member?.user.id!
     )
 
@@ -32,7 +32,7 @@ export class Join {
       return
     }
 
-    var player = bot.moon.players.get(interaction.guildId!)
+    let player = bot.moon.players.get(interaction.guildId!)
 
     if (player) {
       await interaction.editReply({

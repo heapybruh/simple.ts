@@ -2,10 +2,10 @@ import {
   ApplicationCommandOptionType,
   CommandInteraction,
   EmbedBuilder,
-} from "discord.js"
-import { Discord, Slash, SlashOption } from "discordx"
-import { bot, color } from "../index.js"
-import { Terminal } from "../utils/terminal.js"
+} from "npm:discord.js"
+import { Discord, Slash, SlashOption } from "npm:discordx"
+import { bot, color } from "../index.ts"
+import process from "node:process"
 
 @Discord()
 export class Remove {
@@ -34,7 +34,7 @@ export class Remove {
 
     await interaction.deferReply()
 
-    var player = bot.moon.players.get(interaction.guildId!)
+    const player = bot.moon.players.get(interaction.guildId!)
 
     if (!player) {
       await interaction.editReply({
@@ -74,7 +74,9 @@ export class Remove {
             `Successfully removed [${track.title} by **${track.author}**](${track.url}) from queue :notes:`
           )
           .setFooter({
-            text: `@${interaction.user.username} used /${interaction.command!.name}`,
+            text: `@${interaction.user.username} used /${
+              interaction.command!.name
+            }`,
             iconURL: process.env.LOGO_PATH,
           })
           .setTimestamp(Date.now()),

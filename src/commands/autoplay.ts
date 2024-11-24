@@ -2,9 +2,10 @@ import {
   ApplicationCommandOptionType,
   CommandInteraction,
   EmbedBuilder,
-} from "discord.js"
-import { Discord, Slash, SlashChoice, SlashOption } from "discordx"
-import { bot, color } from "../index.js"
+} from "npm:discord.js"
+import { Discord, Slash, SlashChoice, SlashOption } from "npm:discordx"
+import { bot, color } from "../index.ts"
+import process from "node:process"
 
 @Discord()
 export class Autoplay {
@@ -35,7 +36,7 @@ export class Autoplay {
 
     await interaction.deferReply()
 
-    var player = bot.moon.players.get(interaction.guildId!)
+    const player = bot.moon.players.get(interaction.guildId!)
 
     if (!player) {
       await interaction.editReply({
@@ -52,15 +53,21 @@ export class Autoplay {
         new EmbedBuilder()
           .setAuthor({
             name: "Changed autoplay mode",
-            iconURL: process.env.AUTOPLAY_PATH,
+            iconURL: process.env.AUTOPLAY_ICON,
           })
           .setColor(color)
           .setDescription(
-            `Successfully changed autoplay mode to: ${enabled ? "**Enabled** :green_circle:" : "**Disabled** :red_circle:"}`
+            `Successfully changed autoplay mode to: ${
+              enabled
+                ? "**Enabled** :green_circle:"
+                : "**Disabled** :red_circle:"
+            }`
           )
           .setFooter({
-            text: `@${interaction.user.username} used /${interaction.command!.name}`,
-            iconURL: process.env.LOGO_PATH,
+            text: `@${interaction.user.username} used /${
+              interaction.command!.name
+            }`,
+            iconURL: process.env.LOGO,
           })
           .setTimestamp(Date.now()),
       ],

@@ -1,12 +1,13 @@
-import dotenv from "dotenv"
-import { importx, dirname } from "@discordx/importer"
-import { initEvents } from "./utils/events.js"
-import { DiscordClient } from "./utils/clients.js"
-import { HexColorString } from "discord.js"
-import { Client as Genius } from "genius-lyrics"
-import { CronJob } from "cron"
-import { Presence } from "./utils/presence.js"
-import { Manager } from "moonlink.js"
+import dotenv from "npm:dotenv"
+import { importx, dirname } from "npm:@discordx/importer"
+import { initEvents } from "./utils/events.ts"
+import { DiscordClient } from "./utils/clients.ts"
+import { HexColorString } from "npm:discord.js"
+import { Client as Genius } from "npm:genius-lyrics"
+import { CronJob } from "npm:cron"
+import { Presence } from "./utils/presence.ts"
+import { Manager } from "npm:moonlink.js"
+import process from "node:process"
 
 dotenv.config()
 
@@ -28,7 +29,7 @@ export const bot = new DiscordClient(
     ],
     options: {},
     sendPayload: (guildId: any, packet: any) => {
-      let guild = bot.guilds.cache.get(guildId)
+      const guild = bot.guilds.cache.get(guildId)
       if (guild) guild.shard.send(JSON.parse(packet))
     },
   })

@@ -1,5 +1,5 @@
-import { ActivityType } from "discord.js"
-import { bot } from "../index.js"
+import { ActivityType } from "npm:discord.js"
+import { bot } from "../index.ts"
 
 export class Presence {
   static async update(): Promise<void> {
@@ -14,7 +14,7 @@ export class Presence {
       activities: [
         {
           name: `${serverCount} ${serverCount == 1 ? "server" : "servers"}`,
-          state: "Made by @heapy (@heapybruh on GitHub)",
+          state: "Bot maintained by heapy",
           url: "https://github.com/heapybruh/simple.ts",
           type: ActivityType.Watching,
         },

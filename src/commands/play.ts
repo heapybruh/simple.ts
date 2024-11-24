@@ -3,17 +3,16 @@ import {
   EmbedBuilder,
   User,
   type CommandInteraction,
-} from "discord.js"
-import { Discord, Slash, SlashOption } from "discordx"
-import { bot, color } from "../index.js"
-import { secondsToDuration } from "../utils/duration.js"
-import { Terminal } from "../utils/terminal.js"
+} from "npm:discord.js"
+import { Discord, Slash, SlashOption } from "npm:discordx"
+import { bot, color } from "../index.ts"
+import { secondsToDuration } from "../utils/duration.ts"
+import process from "node:process"
 
 @Discord()
 export class Play {
   @Slash({
-    description:
-      "Adds requested track(s) (YouTube, SoundCloud or Spotify) to queue",
+    description: "Adds requested track(s) (YouTube, SoundCloud) to queue",
     name: "play",
   })
   async play(
@@ -37,7 +36,7 @@ export class Play {
 
     await interaction.deferReply()
 
-    var member = interaction.guild?.members.cache.get(
+    const member = interaction.guild?.members.cache.get(
       interaction.member?.user.id!
     )
 
@@ -49,7 +48,7 @@ export class Play {
       return
     }
 
-    var player = bot.moon.players.get(interaction.guildId!)
+    let player = bot.moon.players.get(interaction.guildId!)
 
     if (!player) {
       player = bot.moon.players.create({
@@ -65,7 +64,7 @@ export class Play {
       })
     }
 
-    var results = await bot.moon.search({
+    const results = await bot.moon.search({
       query: query,
       requester: interaction.user,
     })
@@ -101,7 +100,9 @@ export class Play {
             })
             .setColor(color)
             .setFooter({
-              text: `@${member.user.username} used /${interaction.command!.name}`,
+              text: `@${member.user.username} used /${
+                interaction.command!.name
+              }`,
               iconURL: process.env.LOGO_PATH,
             })
             .setTimestamp(Date.now()),
@@ -143,7 +144,9 @@ export class Play {
             })
             .setColor(color)
             .setFooter({
-              text: `@${member.user.username} used /${interaction.command!.name}`,
+              text: `@${member.user.username} used /${
+                interaction.command!.name
+              }`,
               iconURL: process.env.LOGO_PATH,
             })
             .setImage(results.tracks[0].artworkUrl ?? null)

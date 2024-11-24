@@ -2,10 +2,10 @@ import {
   ApplicationCommandOptionType,
   CommandInteraction,
   EmbedBuilder,
-} from "discord.js"
-import { Discord, Slash, SlashOption } from "discordx"
-import { bot, color } from "../index.js"
-import { Track } from "moonlink.js"
+} from "npm:discord.js"
+import { Discord, Slash, SlashOption } from "npm:discordx"
+import { bot, color } from "../index.ts"
+import process from "node:process"
 
 @Discord()
 export class Skip {
@@ -70,10 +70,14 @@ export class Skip {
           })
           .setColor(color)
           .setDescription(
-            `Successfully skipped ${amount} ${amount > 1 ? "tracks" : "track"} :notes:`
+            `Successfully skipped ${amount} ${
+              amount > 1 ? "tracks" : "track"
+            } :notes:`
           )
           .setFooter({
-            text: `@${interaction.user.username} used /${interaction.command!.name}`,
+            text: `@${interaction.user.username} used /${
+              interaction.command!.name
+            }`,
             iconURL: process.env.LOGO_PATH,
           })
           .setTimestamp(Date.now()),

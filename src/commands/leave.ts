@@ -1,6 +1,6 @@
-import { CommandInteraction } from "discord.js"
-import { Discord, Slash } from "discordx"
-import { bot } from "../index.js"
+import { CommandInteraction } from "npm:discord.js"
+import { Discord, Slash } from "npm:discordx"
+import { bot } from "../index.ts"
 
 @Discord()
 export class Leave {
@@ -20,7 +20,7 @@ export class Leave {
 
     await interaction.deferReply()
 
-    var player = bot.moon.players.get(interaction.guildId!)
+    const player = bot.moon.players.get(interaction.guildId!)
 
     if (!player) {
       await interaction.editReply({
