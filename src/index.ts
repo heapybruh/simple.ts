@@ -19,6 +19,9 @@ export const bot = new DiscordClient(
   new Manager({
     nodes: [
       {
+        identifier: process.env.LAVA_IDENTIFIER
+          ? process.env.LAVA_IDENTIFIER
+          : undefined,
         host: process.env.LAVA_HOST ? process.env.LAVA_HOST : `127.0.0.1`,
         port: process.env.LAVA_PORT ? Number(process.env.LAVA_PORT) : 2333,
         secure: process.env.LAVA_SECURE
