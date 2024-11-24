@@ -21,7 +21,9 @@ export const bot = new DiscordClient(
       {
         host: process.env.LAVA_HOST ? process.env.LAVA_HOST : `127.0.0.1`,
         port: process.env.LAVA_PORT ? Number(process.env.LAVA_PORT) : 2333,
-        secure: false,
+        secure: process.env.LAVA_SECURE
+          ? process.env.LAVA_SECURE == "ENABLED"
+          : false,
         password: process.env.LAVA_PASS
           ? process.env.LAVA_PASS
           : `youshallnotpass`,
